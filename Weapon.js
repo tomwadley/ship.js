@@ -24,7 +24,7 @@ Weapon.prototype.canWeaponFire = function() {
 Weapon.prototype.fireIfPossible = function() {
     if (this.timeUntilNextFire == 0) {
         var projectile = new Projectile(this);
-        globalData.entities.push(projectile);
+        globalData.newEntities.push(projectile);
     
         this.timeUntilNextFire = this.weaponTemplate.reloadTime;
     }

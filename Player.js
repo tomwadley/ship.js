@@ -52,6 +52,60 @@ Player.prototype.update = function(delta) {
         this.turningSpeed = 0;
     }
     
+    if (globalData.inputGo) {
+        var x = globalData.inputGoX - this.x;
+        var y = globalData.inputGoY - this.y;
+
+        var distance = Math.sqrt((x * x) + (y * y));
+        x = x / distance;
+        y = y / distance;
+        
+        if (distance < 10) {
+            this.speed = 0;
+        } else if (distance < 20) {
+            this.speed = 100;
+        } else {
+            this.speed = 200;
+        }
+
+        var desiredAngle = Math.acos(x);        
+        if (y < 0) {
+            desiredAngle = -desiredAngle; 
+        }
+        desiredAngle += Math.PI / 2;
+        if (desiredAngle > Math.PI) {
+            desiredAngle -= 2 * Math.PI;
+        }
+        if (desiredAngle <= -Math.PI) {
+            desiredAngle += 2 * Math.PI;
+        }
+        
+        var angleDiff = desiredAngle - this.angle;
+        
+        if (Math.abs(angleDiff) < 0.1) {
+            this.turningSpeed = 0;
+            this.targetAngle = null;
+        } else {
+            var clockwise = false;
+            
+            if ((angleDiff > 0 && angleDiff < Math.PI) ||
+                (angleDiff < 0 && angleDiff < -Math.PI)) {
+                clockwise = true;
+            }
+            
+            if (clockwise) {
+                this.turningSpeed = 8;
+            } else {
+                this.turningSpeed = -8                          ;
+            }
+            
+            this.targetAngle = desiredAngle;
+        }
+    } else {
+        //this.speed = 0;
+        this.targetAngle = null;
+    }
+    
     this.fireIfPossible = globalData.inputShoot;
     
     Unit.prototype.update.call(this, delta);

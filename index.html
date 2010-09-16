@@ -4,8 +4,10 @@
 <title>Ship</title>
 
 <script type="text/javascript" src="UserInput.js"></script>
+<script type="text/javascript" src="EntityFactory.js"></script>
 <script type="text/javascript" src="Sprite.js"></script>
 <script type="text/javascript" src="Entity.js"></script>
+<script type="text/javascript" src="Decoration.js"></script>
 <script type="text/javascript" src="Weapon.js"></script>
 <script type="text/javascript" src="Projectile.js"></script>
 <script type="text/javascript" src="Unit.js"></script>
@@ -22,6 +24,10 @@ function init() {
     game.start();
 }
 
+function showStats() {
+    alert("Entities: " + globalData.entities.length);
+}
+
 window.onload = init;
 -->
 </script>
@@ -35,6 +41,8 @@ Your browser does not support the canvas element
 <p>
 <button onclick="game.start()">Play</button>
 <button onclick="game.pause()">Pause</button>
+<button onclick="showStats()">Stats</button>
 </p>
+<p id="debug"></p>
 </body>
 </html>

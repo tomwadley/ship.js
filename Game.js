@@ -13,8 +13,14 @@ var globalData = {
     inputDown : false,
     inputShoot : false,
     
-    // Active entities
-    entities : []
+    inputGo : false,
+    inputGoX : 0,
+    inputGoY : 0,
+    
+    // Current entities - not to be modified outside this file
+    entities : [],
+    // Entities to add
+    newEntities : []
 }
 
 function Game(canvasId) {
@@ -33,7 +39,7 @@ function Game(canvasId) {
     var prevTime = 0;
     
     // Setup user input
-    initUserInput();
+    initUserInput(outputCanvas);
     
     // Setup globalData
     globalData.left = 0;
@@ -42,9 +48,32 @@ function Game(canvasId) {
     globalData.bottom = canvas.height;
     globalData.context = context;
     
+    // Entity factories
+    var factories = [];
+    
     // Temp vars
     var entity = new Player();
     globalData.entities.push(entity);
+    
+    var spriteTemplate = new SpriteTemplate();
+    var image = new Image();
+    image.src = "bigstar-1.png";
+    spriteTemplate.images[0] = image;
+    var decorationTemplate = new DecorationTemplate();
+    decorationTemplate.spriteTemplate = spriteTemplate;
+    decorationTemplate.turningSpeed = 0;
+    var decorationFactory = new EntityFactory(decorationTemplate, 2);
+    factories.push(decorationFactory);
+    
+    spriteTemplate = new SpriteTemplate();
+    image = new Image();
+    image.src = "smallstar-1.png";
+    spriteTemplate.images[0] = image;
+    decorationTemplate = new DecorationTemplate();
+    decorationTemplate.spriteTemplate = spriteTemplate;
+    decorationTemplate.turningSpeed = 0;
+    decorationFactory = new EntityFactory(decorationTemplate, 4);
+    factories.push(decorationFactory);
     
     this.start = function() {
         if (!interval) {
@@ -73,16 +102,41 @@ function Game(canvasId) {
     var update = function(delta) {
         if (delta == 0) return;
         
+        var deadEntities = [];
+        
         // Update each entity
         for (i = 0; i < globalData.entities.length; i++) {
             globalData.entities[i].update(delta);
+            
+            if (globalData.entities[i].isDead(globalData.entities)) {
+                deadEntities.push(i); // Record the entity's index
+            }
         }
+        
+        // Remove dead entities
+        for (i = 0; i < deadEntities.length; i++) {
+            globalData.entities.splice(deadEntities[i] - i, 1);
+        }
+        
+        // Run factories
+        for (i = 0; i < factories.length; i++) {
+            factories[i].tryGenerate(delta);
+        }
+        
+        // Add new entities
+        globalData.entities = globalData.entities.concat(globalData.newEntities);
+        globalData.newEntities = [];
     }
 
     var render = function() {
         // Clear canvas
         context.fillStyle = "rgb(0,0,0)";
         context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        if (globalData.inputGo) {
+            context.fillStyle = "rgb(255,0,0)";
+            context.fillRect(globalData.inputGoX - 5, globalData.inputGoY - 5, 10, 10);
+        }
         
         // Render each entity
         for (i = 0; i < globalData.entities.length; i++) {

@@ -9,6 +9,7 @@ function Entity() {
     this.movementAngle = 0;
     this.speed = 0;
     this.turningSpeed = 0;
+    this.targetAngle = null;
     
     // Buffer to store unused movement each update
     this.movementBuffer = 0;
@@ -20,6 +21,22 @@ Entity.prototype.width = function() {
 
 Entity.prototype.height = function() {
     return this.sprite.height();
+}
+
+// Returns true if entity is completely off screen
+Entity.prototype.isOutOfDrawingArea = function() {
+    if ((this.x + (this.width() / 2) < globalData.left) ||
+        (this.x - (this.width() / 2) > globalData.right) ||
+        (this.y + (this.height() / 2) < globalData.top) ||
+        (this.y - (this.height() / 2) > globalData.bottom)) {
+        return true;
+    }
+    
+    return false;
+}
+
+Entity.prototype.isDead = function() {
+    return this.isOutOfDrawingArea();
 }
 
 Entity.prototype.update = function(delta) {
@@ -51,11 +68,45 @@ Entity.prototype.update = function(delta) {
     this.movementBuffer = Math.sqrt((movementX * movementX) + (movementY * movementY));
     
     // ** Update angle **
+    // Get number of radians we can turn
     var numberOfRadians = this.turningSpeed * (delta / 1000);
+    var gotoTarget = false;
     
-    this.angle += numberOfRadians;
+    if (numberOfRadians == 0 || this.targetAngle == null) {
+        gotoTarget = false
+    } else if (numberOfRadians > 0) {
+        var targetAngle = this.targetAngle;
+        while (targetAngle < this.angle) {
+            targetAngle += 2 * Math.PI;
+        }
+        if (this.targetAngle > this.angle &&
+            this.targetAngle < this.angle + numberOfRadians) {
+            gotoTarget = true;
+        }
+    } else if (numberOfRadians < 0) {
+        var targetAngle = this.targetAngle;
+        while (targetAngle > this.angle) {
+            targetAngle -= 2 * Math.PI;
+        }
+        if (this.targetAngle < this.angle &&
+            this.targetAngle > this.angle + numberOfRadians) {
+            gotoTarget = true;
+        }
+    }
     
-    // TODO: screenbound
+    if (gotoTarget) {
+        this.angle = this.targetAngle;
+    } else {
+        this.angle += numberOfRadians;
+    }
+    
+    // Keep -PI < angle <= PI
+    if (this.angle > Math.PI) {
+        this.angle -= 2 * Math.PI;
+    }
+    if (this.angle <= -Math.PI) {
+        this.angle += 2 * Math.PI;
+    }
 }
 
 Entity.prototype.render = function(context) {

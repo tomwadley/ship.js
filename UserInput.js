@@ -1,15 +1,34 @@
 
-function initUserInput() {
+function initUserInput(canvas) {
     document.onkeydown = keyDownHandler;
     document.onkeyup = keyUpHandler;
+    
+    canvas.addEventListener("mousedown", mouseDownHandler, false);
+    canvas.addEventListener("mouseup", mouseUpHandler, false);
+    canvas.addEventListener("mousemove", mouseMoveHandler, false);
 }
 
 function keyDownHandler(event) {
     setInputVar(event.keyCode, true);
 }
 
-function keyUpHandler (event) {
+function keyUpHandler(event) {
     setInputVar(event.keyCode, false);
+}
+
+function mouseDownHandler(event) {
+    globalData.inputGo = true;
+    globalData.inputGoX = event.offsetX;
+    globalData.inputGoY = event.offsetY;
+}
+
+function mouseUpHandler(event) {
+    globalData.inputGo = false;
+}
+
+function mouseMoveHandler(event) {
+    globalData.inputGoX = event.offsetX;
+    globalData.inputGoY = event.offsetY;
 }
 
 function setInputVar (keyCode, state) {
