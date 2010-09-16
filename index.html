@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ship</title>
+
+<script type="text/javascript" src="UserInput.js"></script>
+<script type="text/javascript" src="Sprite.js"></script>
+<script type="text/javascript" src="Entity.js"></script>
+<script type="text/javascript" src="Game.js"></script>
+
+<script type="text/javascript">
+<!--
+var game;
+
+function init() {
+    game = new Game('shipCanvas');
+    
+    game.start();
+}
+
+window.onload = init;
+-->
+</script>
+
+</head>
+<body>
+<p>A port of Ship to html5. A work in progress.. Use the arrow keys to move.</p>
+<canvas id="shipCanvas" width="400" height="500">
+Your browser does not support the canvas element
+</canvas>
+<p>
+<button onclick="game.start()">Play</button>
+<button onclick="game.pause()">Pause</button>
+</p>
+</body>
+</html>
