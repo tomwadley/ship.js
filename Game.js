@@ -11,7 +11,10 @@ var globalData = {
     inputRight : false,
     inputUp : false,
     inputDown : false,
-    inputShoot : false
+    inputShoot : false,
+    
+    // Active entities
+    entities : []
 }
 
 function Game(canvasId) {
@@ -40,22 +43,8 @@ function Game(canvasId) {
     globalData.context = context;
     
     // Temp vars
-    
-    var spriteTemplate = new SpriteTemplate();
-    var image = new Image();
-    image.src = "blue_player-1.png";
-    spriteTemplate.images[0] = image;
-    image = new Image();
-    image.src = "blue_player-2.png";
-    spriteTemplate.images[1] = image;
-    var sprite = new Sprite(spriteTemplate);
-    var entity = new Entity();
-    entity.sprite = sprite;
-    entity.x = 100;
-    entity.y = 300;
-    entity.angle = 1;
-    entity.movementAngle = 1;
-    entity.speed = 50;
+    var entity = new Player();
+    globalData.entities.push(entity);
     
     this.start = function() {
         if (!interval) {
@@ -84,26 +73,10 @@ function Game(canvasId) {
     var update = function(delta) {
         if (delta == 0) return;
         
-        entity.movementAngle = entity.angle;
-        
-        if (globalData.inputUp) {
-            entity.speed = 200;
-        } else if (globalData.inputDown) {
-            entity.speed = -200;
-        } else {
-            entity.speed = 0;
+        // Update each entity
+        for (i = 0; i < globalData.entities.length; i++) {
+            globalData.entities[i].update(delta);
         }
-        
-        if (globalData.inputLeft) {
-            entity.turningSpeed = -3;
-        } else if (globalData.inputRight) {
-            entity.turningSpeed = 3;
-        } else {
-            entity.turningSpeed = 0;
-        }
-        
-        
-        entity.update(delta);
     }
 
     var render = function() {
@@ -111,7 +84,10 @@ function Game(canvasId) {
         context.fillStyle = "rgb(0,0,0)";
         context.fillRect(0, 0, canvas.width, canvas.height);
         
-        entity.render(context);
+        // Render each entity
+        for (i = 0; i < globalData.entities.length; i++) {
+            globalData.entities[i].render(context);
+        }
         
         // Write the internal canvas to the output canvas
         outputContext.drawImage(canvas, 0, 0);

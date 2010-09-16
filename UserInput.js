@@ -26,7 +26,7 @@ function setInputVar (keyCode, state) {
         case 40: // Down key
             globalData.inputDown = state;
             break;
-        case 32: // Space bar
+        case 17: // Left Ctrl
             globalData.inputShoot = state;
             break;
         default:
