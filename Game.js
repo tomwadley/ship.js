@@ -63,6 +63,7 @@ function Game(canvasId) {
     decorationTemplate.spriteTemplate = spriteTemplate;
     decorationTemplate.turningSpeed = 0;
     var decorationFactory = new EntityFactory(decorationTemplate, 2);
+    decorationFactory.initialAngle = Math.PI;
     factories.push(decorationFactory);
     
     spriteTemplate = new SpriteTemplate();
@@ -73,12 +74,26 @@ function Game(canvasId) {
     decorationTemplate.spriteTemplate = spriteTemplate;
     decorationTemplate.turningSpeed = 0;
     decorationFactory = new EntityFactory(decorationTemplate, 4);
+    decorationFactory.initialAngle = Math.PI;
     factories.push(decorationFactory);
+    
+    spriteTemplate = new SpriteTemplate();
+    image = new Image();
+    image.src = "grey_enemy-1.png";
+    spriteTemplate.images[0] = image;
+    image = new Image();
+    image.src = "grey_enemy-2.png";
+    spriteTemplate.images[1] = image;
+    enemyTemplate = new EnemyTemplate();
+    enemyTemplate.spriteTemplate = spriteTemplate;
+    enemyFactory = new EntityFactory(enemyTemplate, 0.3);
+    enemyFactory.initialAngle = Math.PI;
+    factories.push(enemyFactory);
     
     this.start = function() {
         if (!interval) {
             prevTime = (new Date()).getTime();
-            interval = setInterval(gameLoop, 1000 / 25);
+            interval = setInterval(gameLoop, 1000 / 30);
         }
     }
 

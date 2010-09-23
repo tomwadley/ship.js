@@ -2,6 +2,7 @@
 function EntityFactory(template, avgNumPerSecond) {
     this.template = template;
     this.avgNumPerSecond = avgNumPerSecond;
+    this.initialAngle = 0;
 }
 
 EntityFactory.prototype.tryGenerate = function(delta) {
@@ -13,8 +14,8 @@ EntityFactory.prototype.tryGenerate = function(delta) {
         
         entity.x = Math.floor(Math.random() * globalData.right + globalData.left);;
         entity.y = globalData.top;
-        entity.speed = 200;
-        entity.movementAngle = Math.PI;
+        entity.angle = this.initialAngle;
+        entity.movementAngle = this.initialAngle;
     }
 }
 

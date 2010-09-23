@@ -8,10 +8,12 @@ function Unit() {
 }
 
 Unit.prototype.update = function(delta) {
-    this.weapon.update(delta);
-    
-    if (this.fireIfPossible && this.weapon.canWeaponFire()) {
-        this.weapon.fireIfPossible();
+    if (this.weapon != null) {
+        this.weapon.update(delta);
+        
+        if (this.fireIfPossible && this.weapon.canWeaponFire()) {
+            this.weapon.fireIfPossible();
+        }
     }
 
     Entity.prototype.update.call(this, delta);
