@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shipmod name="testmod" version="1.0">
+    <spriteTemplates>
+        <spriteTemplate name="bigstar">
+            <images>
+                <image>bigstar-1.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="smallstar">
+            <images>
+                <image>smallstar-1.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="blue_player">
+            <images>
+                <image>blue_player-1.png</image>
+                <image>blue_player-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="plasma">
+            <images>
+                <image>plasma-1.png</image>
+                <image>plasma-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="grey_enemy">
+            <images>
+                <image>grey_enemy-1.png</image>
+                <image>grey_enemy-2.png</image>
+            </images>
+        </spriteTemplate>
+    </spriteTemplates>
+    
+    <decorationTemplates>
+        <decorationTemplate name="bigstar">
+            <spriteTemplate src="bigstar" />
+            <speed>200</speed>
+            <turningSpeed>0</turningSpeed>
+        </decorationTemplate>
+        <decorationTemplate name="smallstar">
+            <spriteTemplate src="smallstar" />
+            <speed>200</speed>
+            <turningSpeed>0</turningSpeed>
+        </decorationTemplate>
+    </decorationTemplates>
+    
+    <enemyTemplates>
+        <enemyTemplate name="grey_enemy">
+            <spriteTemplate src="grey_enemy" />
+            <speed>50</speed>
+        </enemyTemplate>
+    </enemyTemplates>
+    
+    <weaponTemplates>
+        <weaponTemplate name="plasma">
+            <spriteTemplate src="plasma" />
+            <reloadTime>100</reloadTime>
+            <speed>400</speed>
+            <damage>10</damage>
+        </weaponTemplate>
+    </weaponTemplates>
+    
+    <player>
+        <spriteTemplate src="blue_player" />
+        <weaponTemplate src="plasma" />
+    </player>
+    
+    <levelTemplates>
+        <levelTemplate name="test_level">
+            <entityFactory>
+                <decorationTemplate src="bigstar" />
+                <avgNumPerSecond>2</avgNumPerSecond>
+                <initialAngle>3.14159</initialAngle>
+            </entityFactory>
+            <entityFactory>
+                <decorationTemplate src="smallstar" />
+                <avgNumPerSecond>4</avgNumPerSecond>
+                <initialAngle>3.14159</initialAngle>
+            </entityFactory>
+            <entityFactory>
+                <decorationTemplate src="grey_enemy" />
+                <avgNumPerSecond>0.3</avgNumPerSecond>
+                <initialAngle>3.14159</initialAngle>
+            </entityFactory>
+        </levelTemplate>
+    </levelTemplates>
+</shipmod>
+

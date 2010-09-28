@@ -37,3 +37,4 @@ function WeaponTemplate() {
     this.speed = 0;
     this.damage = 0;
 }
+
