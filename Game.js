@@ -38,6 +38,9 @@ function Game(canvasId) {
     var interval = null;
     var prevTime = 0;
     
+    // Load Mod
+    var mod = new Mod("testmod.xml");
+    
     // Setup user input
     initUserInput(outputCanvas);
     

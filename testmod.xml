@@ -78,7 +78,7 @@
                 <initialAngle>3.14159</initialAngle>
             </entityFactory>
             <entityFactory>
-                <decorationTemplate src="grey_enemy" />
+                <enemyTemplate src="grey_enemy" />
                 <avgNumPerSecond>0.3</avgNumPerSecond>
                 <initialAngle>3.14159</initialAngle>
             </entityFactory>
