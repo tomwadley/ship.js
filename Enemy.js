@@ -17,3 +17,7 @@ EnemyTemplate.prototype.generate = function() {
     return new Enemy(this);
 }
 
+EnemyTemplate.prototype.clone = function() {
+    return Object.clone(this);
+}
+

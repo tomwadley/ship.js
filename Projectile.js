@@ -18,3 +18,4 @@ Projectile.prototype.update = function(delta) {
     
     Entity.prototype.update.call(this, delta);
 }
+

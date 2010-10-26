@@ -18,3 +18,8 @@ function DecorationTemplate() {
 DecorationTemplate.prototype.generate = function() {
     return new Decoration(this);
 }
+
+DecorationTemplate.prototype.clone = function() {
+    return Object.clone(this);
+}
+

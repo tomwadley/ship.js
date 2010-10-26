@@ -1,36 +1,11 @@
 
 Player.prototype = new Unit();
 Player.prototype.constructor = Unit;
-function Player () {
-    // Temp vars
-    var spriteTemplate = new SpriteTemplate();
-    var image = new Image();
-    image.src = "blue_player-1.png";
-    spriteTemplate.images[0] = image;
-    image = new Image();
-    image.src = "blue_player-2.png";
-    spriteTemplate.images[1] = image;
-    var sprite = new Sprite(spriteTemplate);
-    
-    this.sprite = sprite;
-    this.x = 100;
-    this.y = 300;
-    this.angle = 1;
-    
-    spriteTemplate = new SpriteTemplate();
-    image = new Image();
-    image.src = "plasma-1.png";
-    spriteTemplate.images[0] = image;
-    image = new Image();
-    image.src = "plasma-2.png";
-    spriteTemplate.images[1] = image;
-    
-    var weaponTemplate = new WeaponTemplate();
-    weaponTemplate.spriteTemplate = spriteTemplate;
-    weaponTemplate.reloadTime = 100;
-    weaponTemplate.speed = 400;
-    weaponTemplate.damage = 10;
-    this.weapon = new Weapon(weaponTemplate, this);
+function Player (playerTemplate) {
+    this.template = playerTemplate;
+
+    this.sprite = new Sprite(this.template.spriteTemplate);
+    this.weapon = new Weapon(this.template.weaponTemplate, this);    
 }
 
 Player.prototype.update = function(delta) {
@@ -96,7 +71,7 @@ Player.prototype.update = function(delta) {
             if (clockwise) {
                 this.turningSpeed = 8;
             } else {
-                this.turningSpeed = -8                          ;
+                this.turningSpeed = -8;
             }
             
             this.targetAngle = desiredAngle;
@@ -126,5 +101,18 @@ Player.prototype.moveInsideDrawingArea = function() {
     } else if (this.y + (this.height() / 2) > globalData.bottom) {
         this.y = globalData.bottom - (this.height() / 2);
     }
+}
+
+function PlayerTemplate() {
+    this.spriteTemplate = null;
+    this.weaponTemplate = null;
+}
+
+PlayerTemplate.prototype.generate = function() {
+    return new Player(this);
+}
+
+PlayerTemplate.prototype.clone = function() {
+    return Object.clone(this);
 }
 

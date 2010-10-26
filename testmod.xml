@@ -60,10 +60,10 @@
         </weaponTemplate>
     </weaponTemplates>
     
-    <player>
+    <playerTemplate>
         <spriteTemplate src="blue_player" />
         <weaponTemplate src="plasma" />
-    </player>
+    </playerTemplate>
     
     <levelTemplates>
         <levelTemplate name="test_level">

@@ -23,6 +23,11 @@ var globalData = {
     newEntities : []
 }
 
+function debug(str) {
+    //var debugP = document.getElementById("debug");
+    //debugP.innerHTML += str + "<br />";
+}
+
 function Game(canvasId) {
     // Setup output context
     var outputCanvas = document.getElementById(canvasId);
@@ -40,6 +45,8 @@ function Game(canvasId) {
     
     // Load Mod
     var mod = new Mod("testmod.xml");
+    var level = new Level(mod.levelTemplates["test_level"]);
+    var factories = level.template.entityFactories;
     
     // Setup user input
     initUserInput(outputCanvas);
@@ -51,47 +58,12 @@ function Game(canvasId) {
     globalData.bottom = canvas.height;
     globalData.context = context;
     
-    // Entity factories
-    var factories = [];
-    
-    // Temp vars
-    var entity = new Player();
-    globalData.entities.push(entity);
-    
-    var spriteTemplate = new SpriteTemplate();
-    var image = new Image();
-    image.src = "bigstar-1.png";
-    spriteTemplate.images[0] = image;
-    var decorationTemplate = new DecorationTemplate();
-    decorationTemplate.spriteTemplate = spriteTemplate;
-    decorationTemplate.turningSpeed = 0;
-    var decorationFactory = new EntityFactory(decorationTemplate, 2);
-    decorationFactory.initialAngle = Math.PI;
-    factories.push(decorationFactory);
-    
-    spriteTemplate = new SpriteTemplate();
-    image = new Image();
-    image.src = "smallstar-1.png";
-    spriteTemplate.images[0] = image;
-    decorationTemplate = new DecorationTemplate();
-    decorationTemplate.spriteTemplate = spriteTemplate;
-    decorationTemplate.turningSpeed = 0;
-    decorationFactory = new EntityFactory(decorationTemplate, 4);
-    decorationFactory.initialAngle = Math.PI;
-    factories.push(decorationFactory);
-    
-    spriteTemplate = new SpriteTemplate();
-    image = new Image();
-    image.src = "grey_enemy-1.png";
-    spriteTemplate.images[0] = image;
-    image = new Image();
-    image.src = "grey_enemy-2.png";
-    spriteTemplate.images[1] = image;
-    enemyTemplate = new EnemyTemplate();
-    enemyTemplate.spriteTemplate = spriteTemplate;
-    enemyFactory = new EntityFactory(enemyTemplate, 0.3);
-    enemyFactory.initialAngle = Math.PI;
-    factories.push(enemyFactory);
+    // Player setup
+    var player = new Player(mod.playerTemplate);
+    player.x = 300;
+    player.y = 400;
+    player.angle = 2;
+    globalData.entities.push(player);
     
     this.start = function() {
         if (!interval) {

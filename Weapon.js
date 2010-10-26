@@ -38,3 +38,7 @@ function WeaponTemplate() {
     this.damage = 0;
 }
 
+WeaponTemplate.prototype.clone = function() {
+    return Object.clone(this);
+}
+

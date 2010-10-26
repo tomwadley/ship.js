@@ -43,4 +43,11 @@ function SpriteTemplate() {
     this.images = [];
 }
 
+SpriteTemplate.prototype.clone = function() {
+    var newTemplate = Object.clone(this);
+    newTemplate.images = Object.clone(this.images);
+    return newTemplate;
+}
+
 SpriteTemplate.prototype.timeBetweenImages = 100;
+
