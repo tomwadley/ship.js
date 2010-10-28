@@ -20,6 +20,10 @@ DecorationTemplate.prototype.generate = function() {
 }
 
 DecorationTemplate.prototype.clone = function() {
-    return Object.clone(this);
+    var clone = new DecorationTemplate();
+    clone.spriteTemplate = this.spriteTemplate;
+    clone.speed = this.speed;
+    clone.turningSpeed = this.turningSpeed;
+    return clone;
 }
 

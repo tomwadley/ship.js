@@ -39,6 +39,11 @@ function WeaponTemplate() {
 }
 
 WeaponTemplate.prototype.clone = function() {
-    return Object.clone(this);
+    var clone = new WeaponTemplate();
+    clone.spriteTemplate = this.spriteTemplate;
+    clone.reloadTime = this.reloadTime;
+    clone.speed = this.speed;
+    clone.damage = this.damage;
+    return clone;
 }
 

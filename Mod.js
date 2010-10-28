@@ -22,14 +22,11 @@ Mod.prototype.load = function() {
     
     var xmlDoc = xmlhttp.responseXML;
     
-    debug("Loading mod file " + this.modURI);
-    
     // TODO: version checks etc
     
     // Parse the xml until it's loaded
     var rootNode = xmlDoc.documentElement;
     while (!this.loaded) {
-        debug("Begining parse");
         this.loaded = true;
         this.parseRootNode(rootNode);
     }
@@ -40,28 +37,24 @@ Mod.prototype.parseRootNode = function(rootNode) {
         var childNode = rootNode.childNodes[i];
         switch (rootNode.childNodes[i].nodeName) {
             case "spriteTemplates":
-                debug("--spriteTemplates");
                 this.parseTemplateCollectionNode(childNode, "spriteTemplate");
                 break;
             case "decorationTemplates":
-                debug("--decorationTemplates");
                 this.parseTemplateCollectionNode(childNode, "decorationTemplate");
                 break;
             case "enemyTemplates":
-                debug("--enemyTemplates");
                 this.parseTemplateCollectionNode(childNode, "enemyTemplate");
                 break;
             case "weaponTemplates":
-                debug("--weaponTemplates");
                 this.parseTemplateCollectionNode(childNode, "weaponTemplate");
                 break;
             case "levelTemplates":
-                debug("--levelTemplates");
                 this.parseTemplateCollectionNode(childNode, "levelTemplate");
                 break;
             case "playerTemplate":
-                debug("--playerTemplate");
-                this.parsePlayerTemplateNode(childNode);
+                if (!this.parsePlayerTemplateNode(childNode)) {
+                    this.loaded = false;
+                }    
                 break;
             default:
                 break;
@@ -79,8 +72,6 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
     if (node.nodeName != nodeName) {
         return;
     }
-    
-    debug("-" + nodeName);
     
     var templateType;
     var templateList;
@@ -131,10 +122,8 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
     // If there is a src attribute, fetch the source entity
     if (entitySrcName != null) {
         entitySrc = templateList[entitySrcName];
-        debug("ref: " + entitySrcName);
         // If the source hasn't been loaded yet, we'll need another pass
         if (entitySrc == null) {
-            debug("not found!");
             this.loaded = false;
             return;
         }
@@ -145,8 +134,6 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
         return entitySrc;
     }
     
-    debug("new: " + entityName + " - " + entitySrcName);
-    
     // Create a new entity or create a copy of the source entity
     if (entitySrc == null) {
         entity = new templateType();
@@ -154,19 +141,19 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
         entity = entitySrc.clone();
     }
     
-    debug("parsing");
-    
     // Call template specific function to parse node data into entity
-    parseFunc.call(this, node, entity);
-    // TODO: each specific template parse method must check to see if 
-    // each of it's child templates fails to load. If any are null,
-    // it must return false which should be checked for here.
-    // On false we should set this.loaded = false and return.
+    if (!parseFunc.call(this, node, entity)) {
+        // A referenced entity isn't loaded yet, we'll need another pass
+        this.loaded = false;
+        return;
+    }
     
     // If this entity has a name, store this entity in the list
     if (entityName != null) {
         templateList[entityName] = entity;
     }
+    
+    return entity;
 }
 
 Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
@@ -186,6 +173,8 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
                 break;
         }
     }
+    
+    return true;
 }
 
 Mod.prototype.parseDecorationTemplateNode = function(node, entity) {
@@ -206,6 +195,11 @@ Mod.prototype.parseDecorationTemplateNode = function(node, entity) {
                 break;
         }
     }
+    
+    if (entity.spriteTemplate == null) {
+        return false;
+    }
+    return true;
 }
 
 Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
@@ -223,6 +217,11 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
                 break;
         }
     }
+    
+    if (entity.spriteTemplate == null) {
+        return false;
+    }
+    return true;
 }
 
 Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
@@ -246,9 +245,16 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
                 break;
         }
     }
+    
+    if (entity.spriteTemplate == null) {
+        return false;
+    }
+    return true;
 }
 
 Mod.prototype.parseLevelTemplateNode = function(node, entity) {
+    var loaded = true;
+    
     for (var i = 0; i < node.childNodes.length; i++) {
         var childNode = node.childNodes[i];
         
@@ -281,11 +287,16 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
                 var entityFactory = new EntityFactory(template, avgNumPerSecond);
                 entityFactory.initialAngle = initialAngle;
                 entity.entityFactories.push(entityFactory);
+                if (entityFactory.template == null) {
+                    loaded = false;
+                }
                 break;
             default:    
                 break;
         }
     }
+    
+    return loaded;
 }
 
 Mod.prototype.parsePlayerTemplateNode = function(node) {
@@ -307,5 +318,11 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
     }
     
     this.playerTemplate = entity;
+    
+    if (entity.spriteTemplate == null ||
+        entity.weaponTemplate == null) {
+        return false;
+    }
+    return true;
 }
 

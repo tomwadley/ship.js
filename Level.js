@@ -8,8 +8,10 @@ function LevelTemplate() {
 }
 
 LevelTemplate.prototype.clone = function() {
-    var newTemplate = Object.clone(this);
-    newTemplate.entityFactories = Object.clone(this.entityFactories);
-    return newTemplate;
+    var clone = new LevelTemplate();
+    for (var i = 0; i < this.entityFactories.length; i++) {
+        clone.entityFactories.push(this.entityFactories[i]);
+    }
+    return clone;
 }
 

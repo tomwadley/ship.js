@@ -24,8 +24,8 @@ var globalData = {
 }
 
 function debug(str) {
-    //var debugP = document.getElementById("debug");
-    //debugP.innerHTML += str + "<br />";
+    var debugP = document.getElementById("debug");
+    debugP.innerHTML += str + "<br />";
 }
 
 function Game(canvasId) {

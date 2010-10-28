@@ -113,6 +113,9 @@ PlayerTemplate.prototype.generate = function() {
 }
 
 PlayerTemplate.prototype.clone = function() {
-    return Object.clone(this);
+    var clone = new PlayerTemplate();
+    clone.spriteTemplate = this.spriteTemplate;
+    clone.weaponTemplate = this.weaponTemplate;
+    return clone;
 }
 
