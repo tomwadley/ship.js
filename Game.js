@@ -63,6 +63,7 @@ function Game(canvasId) {
     player.x = 300;
     player.y = 400;
     player.angle = 2;
+    player.zorder = factories.length;
     globalData.entities.push(player);
     
     this.start = function() {
@@ -110,12 +111,17 @@ function Game(canvasId) {
         
         // Run factories
         for (i = 0; i < factories.length; i++) {
-            factories[i].tryGenerate(delta);
+            factories[i].tryGenerate(delta, i);
         }
         
         // Add new entities
         globalData.entities = globalData.entities.concat(globalData.newEntities);
         globalData.newEntities = [];
+        
+        // Sort entities by zorder
+        globalData.entities.sort(function(a, b) {
+            return a.zorder - b.zorder;
+        });
     }
 
     var render = function() {

@@ -5,6 +5,7 @@ function Entity() {
     this.x = 0;
     this.y = 0;
     this.angle = 0;
+    this.zorder = 0;
     
     this.movementAngle = 0;
     this.speed = 0;

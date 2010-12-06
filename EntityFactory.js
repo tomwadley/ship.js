@@ -5,7 +5,7 @@ function EntityFactory(template, avgNumPerSecond) {
     this.initialAngle = 0;
 }
 
-EntityFactory.prototype.tryGenerate = function(delta) {
+EntityFactory.prototype.tryGenerate = function(delta, zorder) {
     var probability = this.avgNumPerSecond * (delta / 1000);
     
     if (Math.random() < probability) {
@@ -16,6 +16,7 @@ EntityFactory.prototype.tryGenerate = function(delta) {
         entity.y = globalData.top;
         entity.angle = this.initialAngle;
         entity.movementAngle = this.initialAngle;
+        entity.zorder = zorder;
     }
 }
 
