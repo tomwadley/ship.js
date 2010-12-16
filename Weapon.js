@@ -23,7 +23,7 @@ Weapon.prototype.canWeaponFire = function() {
 
 Weapon.prototype.fireIfPossible = function() {
     if (this.timeUntilNextFire == 0) {
-        var projectile = new Projectile(this);
+        var projectile = new Projectile(this, this.unit.zorder - 0.5);
         globalData.newEntities.push(projectile);
     
         this.timeUntilNextFire = this.weaponTemplate.reloadTime;

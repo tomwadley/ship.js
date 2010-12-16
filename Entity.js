@@ -129,3 +129,4 @@ Entity.prototype.render = function(context) {
     // Pop matrix
     context.restore();
 }
+
