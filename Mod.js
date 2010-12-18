@@ -213,6 +213,8 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
             case "speed":
                 entity.speed = childNode.childNodes[0].nodeValue;
                 break;
+            case "hitPoints":
+                entity.hitPoints = childNode.childNodes[0].nodeValue;
             default:    
                 break;
         }

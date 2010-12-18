@@ -5,7 +5,8 @@ function Player (playerTemplate) {
     this.template = playerTemplate;
 
     this.sprite = new Sprite(this.template.spriteTemplate);
-    this.weapon = new Weapon(this.template.weaponTemplate, this);    
+    this.weapon = new Weapon(this.template.weaponTemplate, this);
+    this.hitPoints = 10;    
 }
 
 Player.prototype.update = function(delta) {

@@ -11,12 +11,21 @@ function Projectile(weapon, zorder) {
     this.angle = weapon.unit.angle + weapon.offsetAngle;
     this.speed = weapon.weaponTemplate.speed;
     this.movementAngle = this.angle;
-    //this.turningSpeed = 2;
+    
+    this.dead = false;
+}
+
+Projectile.prototype.entityType = "Projectile";
+
+Projectile.prototype.canCollide = function() {
+    return true;   
+}
+
+Projectile.prototype.isDead = function() {
+    return this.dead || Entity.prototype.isDead.call(this);
 }
 
 Projectile.prototype.update = function(delta) {
-    //this.movementAngle = this.angle;    
-    
     Entity.prototype.update.call(this, delta);
 }
 

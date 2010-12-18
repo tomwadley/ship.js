@@ -93,24 +93,23 @@ function Game(canvasId) {
     var update = function(delta) {
         if (delta == 0) return;
         
-        var deadEntities = [];
-        
         // Update each entity
-        for (i = 0; i < globalData.entities.length; i++) {
+        for (var i = 0; i < globalData.entities.length; i++) {
             globalData.entities[i].update(delta);
-            
-            if (globalData.entities[i].isDead(globalData.entities)) {
-                deadEntities.push(i); // Record the entity's index
+        }
+        
+        // Perform collision detection
+        RunCollisionDetection();
+        
+        // Remove dead entities
+        for (var i = globalData.entities.length - 1; i >= 0; i--) {
+            if (globalData.entities[i].isDead()) {
+                globalData.entities.splice(i, 1);
             }
         }
         
-        // Remove dead entities
-        for (i = 0; i < deadEntities.length; i++) {
-            globalData.entities.splice(deadEntities[i] - i, 1);
-        }
-        
         // Run factories
-        for (i = 0; i < factories.length; i++) {
+        for (var i = 0; i < factories.length; i++) {
             factories[i].tryGenerate(delta, i);
         }
         
@@ -135,7 +134,7 @@ function Game(canvasId) {
         }
         
         // Render each entity
-        for (i = 0; i < globalData.entities.length; i++) {
+        for (var i = 0; i < globalData.entities.length; i++) {
             globalData.entities[i].render(context);
         }
         

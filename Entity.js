@@ -40,6 +40,10 @@ Entity.prototype.isDead = function() {
     return this.isOutOfDrawingArea();
 }
 
+Entity.prototype.canCollide = function() {
+    return false;   
+}
+
 Entity.prototype.update = function(delta) {
     // ** Update sprite **
     this.sprite.update(delta);

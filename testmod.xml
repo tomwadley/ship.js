@@ -48,6 +48,7 @@
         <enemyTemplate name="grey_enemy">
             <spriteTemplate src="grey_enemy" />
             <speed>50</speed>
+            <hitPoints>20</hitPoints>
         </enemyTemplate>
     </enemyTemplates>
     

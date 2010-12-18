@@ -6,11 +6,19 @@ function Enemy(enemyTemplate) {
     
     this.sprite = new Sprite(this.template.spriteTemplate);
     this.speed = this.template.speed;
+    this.hitPoints = this.template.hitPoints;
 }
 
 function EnemyTemplate() {
     this.spriteTemplate = null;
     this.speed = 50;
+    this.hitPoints = 20;
+}
+
+Enemy.prototype.entityType = "Enemy";
+
+Enemy.prototype.canCollide = function() {
+    return true;   
 }
 
 EnemyTemplate.prototype.generate = function() {
@@ -21,6 +29,7 @@ EnemyTemplate.prototype.clone = function() {
     var clone = new EnemyTemplate();
     clone.spriteTemplate = this.spriteTemplate;
     clone.speed = this.speed;
+    clone.hitPoints = this.hitPoints;
     return clone;
 }
 

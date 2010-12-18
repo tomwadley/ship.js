@@ -5,6 +5,11 @@ function Unit() {
     this.fireIfPossible = false;
     
     this.weapon = null;
+    this.hitPoints = 0;
+}
+
+Unit.prototype.isDead = function() {
+    return this.hitPoints <= 0 || Entity.prototype.isDead.call(this);
 }
 
 Unit.prototype.update = function(delta) {
