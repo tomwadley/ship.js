@@ -33,6 +33,7 @@ Weapon.prototype.fireIfPossible = function() {
 
 function WeaponTemplate() {
     this.spriteTemplate = null;
+    this.spriteTemplateDead = null;
     this.reloadTime = 0;
     this.speed = 0;
     this.damage = 0;
@@ -41,6 +42,7 @@ function WeaponTemplate() {
 WeaponTemplate.prototype.clone = function() {
     var clone = new WeaponTemplate();
     clone.spriteTemplate = this.spriteTemplate;
+    clone.spriteTemplateDead = this.spriteTemplateDead;
     clone.reloadTime = this.reloadTime;
     clone.speed = this.speed;
     clone.damage = this.damage;

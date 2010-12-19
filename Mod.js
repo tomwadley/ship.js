@@ -69,7 +69,7 @@ Mod.prototype.parseTemplateCollectionNode = function(node, childrenNodeName) {
 }
 
 Mod.prototype.parseTemplateNode = function(node, nodeName) {
-    if (node.nodeName != nodeName) {
+    if (node.nodeType != Node.ELEMENT_NODE) {
         return;
     }
     
@@ -233,6 +233,9 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
         switch (childNode.nodeName) {
             case "spriteTemplate":
                 entity.spriteTemplate = this.parseTemplateNode(childNode, 'spriteTemplate');
+                break;
+            case "spriteTemplateDead":
+                entity.spriteTemplateDead = this.parseTemplateNode(childNode, 'spriteTemplate');
                 break;
             case "reloadTime":
                 entity.reloadTime = childNode.childNodes[0].nodeValue;

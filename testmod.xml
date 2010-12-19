@@ -23,6 +23,12 @@
                 <image>plasma-2.png</image>
             </images>
         </spriteTemplate>
+        <spriteTemplate name="plasma_dead">
+            <images>
+                <image>plasma_dead-1.png</image>
+                <image>plasma_dead-2.png</image>
+            </images>
+        </spriteTemplate>
         <spriteTemplate name="grey_enemy">
             <images>
                 <image>grey_enemy-1.png</image>
@@ -55,6 +61,7 @@
     <weaponTemplates>
         <weaponTemplate name="plasma">
             <spriteTemplate src="plasma" />
+            <spriteTemplateDead src="plasma_dead" />
             <reloadTime>100</reloadTime>
             <speed>400</speed>
             <damage>10</damage>

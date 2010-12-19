@@ -12,20 +12,30 @@ function Projectile(weapon, zorder) {
     this.speed = weapon.weaponTemplate.speed;
     this.movementAngle = this.angle;
     
-    this.dead = false;
+    this.dying = false;
 }
 
 Projectile.prototype.entityType = "Projectile";
 
 Projectile.prototype.canCollide = function() {
-    return true;   
+    return !this.dying;   
 }
 
 Projectile.prototype.isDead = function() {
-    return this.dead || Entity.prototype.isDead.call(this);
+    if (this.dying && this.sprite.animationEnded) {
+        return true;
+    }
+    return Entity.prototype.isDead.call(this);
 }
 
 Projectile.prototype.update = function(delta) {
     Entity.prototype.update.call(this, delta);
+}
+
+Projectile.prototype.startDying = function() {
+    this.dying = true;
+    this.sprite = new Sprite(this.weapon.weaponTemplate.spriteTemplateDead);
+    this.sprite.loop = false;
+    this.speed = 0;
 }
 
