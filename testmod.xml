@@ -35,6 +35,12 @@
                 <image>grey_enemy-2.png</image>
             </images>
         </spriteTemplate>
+        <spriteTemplate name="explosion">
+            <images>
+                <image>explosion-1.png</image>
+                <image>explosion-2.png</image>
+            </images>
+        </spriteTemplate>
     </spriteTemplates>
     
     <decorationTemplates>
@@ -53,8 +59,9 @@
     <enemyTemplates>
         <enemyTemplate name="grey_enemy">
             <spriteTemplate src="grey_enemy" />
+            <spriteTemplateDead src="explosion" />
             <speed>50</speed>
-            <hitPoints>20</hitPoints>
+            <hitPoints>40</hitPoints>
         </enemyTemplate>
     </enemyTemplates>
     
@@ -87,7 +94,7 @@
             </entityFactory>
             <entityFactory>
                 <enemyTemplate src="grey_enemy" />
-                <avgNumPerSecond>0.3</avgNumPerSecond>
+                <avgNumPerSecond>0.7</avgNumPerSecond>
                 <initialAngle>3.14159</initialAngle>
             </entityFactory>
         </levelTemplate>

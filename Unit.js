@@ -26,6 +26,15 @@ function Unit() {
     this.hitPoints = 0;
 }
 
+Unit.prototype.takeDamage = function(hitPoints) {
+    this.hitPoints -= hitPoints;
+    if (this.hitPoints <= 0) {
+        this.startDying();
+    }
+}
+
+Unit.prototype.startDying = function() {}
+
 Unit.prototype.isDead = function() {
     return this.hitPoints <= 0 || Entity.prototype.isDead.call(this);
 }

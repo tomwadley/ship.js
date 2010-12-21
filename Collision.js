@@ -61,7 +61,7 @@ function CallCollisionFunction(entityA, entityB) {
 var collisionFunctions = [
     {typeA : Projectile.prototype.entityType, typeB : Enemy.prototype.entityType, func : 
     function(projectile, enemy) {
-        enemy.hitPoints -= projectile.weapon.weaponTemplate.damage;
+        enemy.takeDamage(projectile.weapon.weaponTemplate.damage);
         projectile.startDying();
     }}
 ]

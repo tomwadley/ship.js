@@ -228,6 +228,9 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
             case "spriteTemplate":
                 entity.spriteTemplate = this.parseTemplateNode(childNode, 'spriteTemplate');
                 break;
+            case "spriteTemplateDead":
+                entity.spriteTemplateDead = this.parseTemplateNode(childNode, 'spriteTemplate');
+                break;
             case "speed":
                 entity.speed = childNode.childNodes[0].nodeValue;
                 break;
