@@ -29,6 +29,18 @@
                 <image>plasma_dead-2.png</image>
             </images>
         </spriteTemplate>
+        <spriteTemplate name="missile">
+            <images>
+                <image>missile-1.png</image>
+                <image>missile-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="missile_dead">
+            <images>
+                <image>missile_dead-1.png</image>
+                <image>missile_dead-2.png</image>
+            </images>
+        </spriteTemplate>
         <spriteTemplate name="grey_enemy">
             <images>
                 <image>grey_enemy-1.png</image>
@@ -60,6 +72,7 @@
         <enemyTemplate name="grey_enemy">
             <spriteTemplate src="grey_enemy" />
             <spriteTemplateDead src="explosion" />
+            <weaponTemplate src="missile" />
             <speed>50</speed>
             <hitPoints>40</hitPoints>
         </enemyTemplate>
@@ -73,10 +86,18 @@
             <speed>400</speed>
             <damage>10</damage>
         </weaponTemplate>
+        <weaponTemplate name="missile">
+            <spriteTemplate src="missile" />
+            <spriteTemplateDead src="missile_dead" />
+            <reloadTime>2000</reloadTime>
+            <speed>200</speed>
+            <damage>20</damage>
+        </weaponTemplate>
     </weaponTemplates>
-    
+
     <playerTemplate>
         <spriteTemplate src="blue_player" />
+        <spriteTemplateDead src="explosion" />
         <weaponTemplate src="plasma" />
     </playerTemplate>
     

@@ -24,6 +24,12 @@ function Unit() {
     
     this.weapon = null;
     this.hitPoints = 0;
+
+    this.dying_ = false;
+}
+
+Unit.prototype.canCollide = function() {
+    return !this.dying_;
 }
 
 Unit.prototype.takeDamage = function(hitPoints) {
@@ -33,11 +39,24 @@ Unit.prototype.takeDamage = function(hitPoints) {
     }
 }
 
-Unit.prototype.startDying = function() {}
+Unit.prototype.startDying = function() {
+    if (this.dying_) {
+        return;
+    }
+    this.dying_ = true;
+    this.sprite = new Sprite(this.template.spriteTemplateDead);
+    this.sprite.loop = false;
+    this.speed = 0;
+}
 
 Unit.prototype.isDead = function() {
+    if (this.dying_) {
+        return this.sprite.animationEnded;
+    }
     return this.hitPoints <= 0 || Entity.prototype.isDead.call(this);
 }
+
+Unit.prototype.getSpriteTemplateDead = function() {}
 
 Unit.prototype.update = function(delta) {
     if (this.weapon != null) {

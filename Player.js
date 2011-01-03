@@ -24,8 +24,10 @@ function Player (playerTemplate) {
 
     this.sprite = new Sprite(this.template.spriteTemplate);
     this.weapon = new Weapon(this.template.weaponTemplate, this);
-    this.hitPoints = 10;    
+    this.hitPoints = 50;
 }
+
+Enemy.prototype.entityType = "Player";
 
 Player.prototype.update = function(delta) {
     this.movementAngle = this.angle;
@@ -124,6 +126,7 @@ Player.prototype.moveInsideDrawingArea = function() {
 
 function PlayerTemplate() {
     this.spriteTemplate = null;
+    this.spriteTemplateDead = null;
     this.weaponTemplate = null;
 }
 

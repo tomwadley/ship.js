@@ -23,40 +23,25 @@ function Enemy(enemyTemplate) {
     this.template = enemyTemplate;
     
     this.sprite = new Sprite(this.template.spriteTemplate);
+    this.weapon = new Weapon(this.template.weaponTemplate, this);
     this.speed = this.template.speed;
     this.hitPoints = this.template.hitPoints;
-    
-    this.dying = false;
+
+    this.fireIfPossible = true;
+}
+
+Enemy.prototype.entityType = "Enemy";
+
+Enemy.prototype.getSpriteTemplateDead = function() {
+    return this.template.spriteTemplateDead;
 }
 
 function EnemyTemplate() {
     this.spriteTemplate = null;
     this.spriteTemplateDead = null;
-    this.speed = 50;
-    this.hitPoints = 20;
-}
-
-Enemy.prototype.entityType = "Enemy";
-
-Enemy.prototype.canCollide = function() {
-    return true;   
-}
-
-Enemy.prototype.isDead = function() {
-    if (this.dying) {
-        return this.sprite.animationEnded;
-    }
-    return Unit.prototype.isDead.call(this);
-}
-
-Enemy.prototype.startDying = function() {
-    if (this.dying) {
-        return;
-    }
-    this.dying = true;
-    this.sprite = new Sprite(this.template.spriteTemplateDead);
-    this.sprite.loop = false;
+    this.weaponTemplate = null;
     this.speed = 0;
+    this.hitPoints = 0;
 }
 
 EnemyTemplate.prototype.generate = function() {

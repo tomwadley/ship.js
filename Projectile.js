@@ -20,13 +20,13 @@
 Projectile.prototype = new Entity();
 Projectile.prototype.constructor = Entity;
 function Projectile(weapon, zorder) {
-    this.weapon = weapon;
+    this.weapon_ = weapon;
     
     this.sprite = new Sprite(weapon.weaponTemplate.spriteTemplate);
-    this.x = weapon.unit.x + weapon.offsetX;
-    this.y = weapon.unit.y + weapon.offsetY;
+    this.x = weapon.getUnit().x + weapon.offsetX;
+    this.y = weapon.getUnit().y + weapon.offsetY;
     this.zorder = zorder;
-    this.angle = weapon.unit.angle + weapon.offsetAngle;
+    this.angle = weapon.getUnit().angle + weapon.offsetAngle;
     this.speed = weapon.weaponTemplate.speed;
     this.movementAngle = this.angle;
     
@@ -36,7 +36,7 @@ function Projectile(weapon, zorder) {
 Projectile.prototype.entityType = "Projectile";
 
 Projectile.prototype.canCollide = function() {
-    return !this.dying;   
+    return !this.dying;
 }
 
 Projectile.prototype.isDead = function() {
@@ -52,8 +52,16 @@ Projectile.prototype.update = function(delta) {
 
 Projectile.prototype.startDying = function() {
     this.dying = true;
-    this.sprite = new Sprite(this.weapon.weaponTemplate.spriteTemplateDead);
+    this.sprite = new Sprite(this.weapon_.weaponTemplate.spriteTemplateDead);
     this.sprite.loop = false;
     this.speed = 0;
+}
+
+Projectile.prototype.getFiringUnit = function() {
+    return this.weapon_.getUnit();
+}
+
+Projectile.prototype.getDamage = function() {
+    return this.weapon_.weaponTemplate.damage;
 }
 

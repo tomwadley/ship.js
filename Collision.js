@@ -38,10 +38,20 @@ function RunCollisionDetection() {
 }
 
 function IsColliding(entityA, entityB) {
-    if (entityA.x < entityB.x + entityB.width() &&
-        entityA.x + entityA.width() > entityB.x &&
-        entityA.y < entityB.y + entityB.height() &&
-        entityA.y + entityA.height() > entityB.y) {
+    var widthA = entityA.width();
+    var heightA = entityA.height();
+    var widthB = entityB.width();
+    var heightB = entityB.height();
+
+    var leftA = entityA.x - (widthA / 2);
+    var topA = entityA.y - (heightA / 2);
+    var leftB = entityB.x - (widthB / 2);
+    var topB = entityB.y - (heightB / 2);
+
+    if (leftA < leftB + widthB &&
+        leftA + widthA > leftB &&
+        topA < topB + heightB &&
+        topA + heightA > topB) {
         return true;
     }
     return false;
@@ -61,8 +71,20 @@ function CallCollisionFunction(entityA, entityB) {
 var collisionFunctions = [
     {typeA : Projectile.prototype.entityType, typeB : Enemy.prototype.entityType, func : 
     function(projectile, enemy) {
-        enemy.takeDamage(projectile.weapon.weaponTemplate.damage);
+        if (projectile.getFiringUnit() == enemy) return;
+        enemy.takeDamage(projectile.getDamage());
         projectile.startDying();
+    }},
+    {typeA : Projectile.prototype.entityType, typeB : Player.prototype.entityType, func : 
+    function(projectile, player) {
+        if (projectile.getFiringUnit() == player) return;
+        player.takeDamage(projectile.getDamage());
+        projectile.startDying();
+    }},
+    {typeA : Player.prototype.entityType, typeB : Enemy.prototype.entityType, func : 
+    function(player, enemy) {
+        player.takeDamage(10);
+        enemy.takeDamage(10);
     }}
 ]
 

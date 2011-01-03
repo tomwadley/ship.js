@@ -19,7 +19,7 @@
  
 function Weapon(weaponTemplate, unit) {
     this.weaponTemplate = weaponTemplate;
-    this.unit = unit;
+    this.unit_ = unit;
     
     this.offsetX = 0;
     this.offsetY = 0;
@@ -41,11 +41,15 @@ Weapon.prototype.canWeaponFire = function() {
 
 Weapon.prototype.fireIfPossible = function() {
     if (this.timeUntilNextFire == 0) {
-        var projectile = new Projectile(this, this.unit.zorder - 0.5);
+        var projectile = new Projectile(this, this.unit_.zorder - 0.5);
         globalData.newEntities.push(projectile);
     
         this.timeUntilNextFire = this.weaponTemplate.reloadTime;
     }
+}
+
+Weapon.prototype.getUnit = function() {
+    return this.unit_;
 }
 
 
