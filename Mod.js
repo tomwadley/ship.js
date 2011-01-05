@@ -344,6 +344,12 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
             case "weaponTemplate":
                 entity.weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
                 break;
+            case "speed":
+                entity.speed = childNode.childNodes[0].nodeValue;
+                break;
+            case "hitPoints":
+                entity.hitPoints = childNode.childNodes[0].nodeValue;
+                break;
             default:    
                 break;
         }

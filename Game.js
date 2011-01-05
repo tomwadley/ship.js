@@ -34,6 +34,8 @@ var globalData = {
     inputGo : false,
     inputGoX : 0,
     inputGoY : 0,
+
+    freeRangeMode : false,
     
     // Current entities - not to be modified outside this file
     entities : [],

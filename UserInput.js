@@ -20,6 +20,7 @@
 function initUserInput(canvas) {
     document.onkeydown = keyDownHandler;
     document.onkeyup = keyUpHandler;
+    document.onkeypress = keyPressHandler;
     
     canvas.addEventListener("mousedown", mouseDownHandler, false);
     canvas.addEventListener("mouseup", mouseUpHandler, false);
@@ -32,6 +33,17 @@ function keyDownHandler(event) {
 
 function keyUpHandler(event) {
     setInputVar(event.keyCode, false);
+}
+
+function keyPressHandler(event) {
+    var key = String.fromCharCode(event.charCode);
+    switch (key) {
+        case 'r': 
+            globalData.freeRangeMode = !globalData.freeRangeMode;
+            break;
+        default:
+            break;
+    }
 }
 
 function mouseDownHandler(event) {

@@ -82,7 +82,7 @@
         <weaponTemplate name="plasma">
             <spriteTemplate src="plasma" />
             <spriteTemplateDead src="plasma_dead" />
-            <reloadTime>100</reloadTime>
+            <reloadTime>120</reloadTime>
             <speed>400</speed>
             <damage>10</damage>
         </weaponTemplate>
@@ -99,6 +99,8 @@
         <spriteTemplate src="blue_player" />
         <spriteTemplateDead src="explosion" />
         <weaponTemplate src="plasma" />
+        <speed>250</speed>
+        <hitPoints>100</hitPoints>
     </playerTemplate>
     
     <levelTemplates>

@@ -24,18 +24,84 @@ function Player (playerTemplate) {
 
     this.sprite = new Sprite(this.template.spriteTemplate);
     this.weapon = new Weapon(this.template.weaponTemplate, this);
-    this.hitPoints = 50;
+    this.hitPoints = this.template.hitPoints;
 }
 
 Enemy.prototype.entityType = "Player";
 
 Player.prototype.update = function(delta) {
     this.movementAngle = this.angle;
+
+    if (globalData.freeRangeMode) {
+        this.moveFreeRangeMode();
+    } else {
+        this.turningSpeed = 0;
+        this.targetAngle = null;
+        if (this.angle != 0) {
+            // Rotate back to facing forwards
+            this.targetAngle = 0;
+            var desiredAngle = this.getTargetAngle(this.x, this.y - 1);
+            this.setTurningSpeed(desiredAngle);
+        }
+        this.moveNormal();
+    }
     
+    this.fireIfPossible = globalData.inputShoot;
+    
+    Unit.prototype.update.call(this, delta);
+    
+    this.moveInsideDrawingArea();
+}
+
+Player.prototype.moveNormal = function() {
+    if (globalData.inputGo) {
+        var desiredAngle = this.getTargetAngle(globalData.inputGoX, globalData.inputGoY);
+        
+        var distance = this.getDistance(globalData.inputGoX, globalData.inputGoY);
+
+        if (distance < 10) { // TODO: setting this lower causes a strange bug
+            this.speed = 0;
+        } else if (distance < 15) {
+            this.speed = this.template.speed / 2;
+        } else {
+            this.speed = this.template.speed;
+        }
+
+        this.movementAngle = desiredAngle;
+    } else {
+        this.movementAngle = 0;
+
+        var moveX = 0;
+        var moveY = 0;
+
+        if (globalData.inputRight) moveX++;
+        if (globalData.inputLeft) moveX--;
+        if (globalData.inputDown) moveY++;
+        if (globalData.inputUp) moveY--;
+
+        if (moveX == 0) {
+            if (moveY > 0) this.movementAngle = Math.PI;
+        } else if (moveX < 0) {
+            this.movementAngle = -Math.PI / 2;
+            this.movementAngle -= moveY * (Math.PI / 4);
+        } else {
+            this.movementAngle = Math.PI / 2;
+            this.movementAngle += moveY * (Math.PI / 4);
+        }
+
+        if (moveX != 0 || moveY != 0) {
+            this.speed = this.template.speed;
+        } else {
+            this.speed = 0;
+        }
+    }
+}
+
+Player.prototype.moveFreeRangeMode = function() {
     if (globalData.inputUp) {
-        this.speed = 200;
+        this.speed = this.template.speed;
     } else if (globalData.inputDown) {
-        this.speed = -200;
+        this.speed = -this.template.speed;
     } else {
         this.speed = 0;
     }
@@ -49,64 +115,72 @@ Player.prototype.update = function(delta) {
     }
     
     if (globalData.inputGo) {
-        var x = globalData.inputGoX - this.x;
-        var y = globalData.inputGoY - this.y;
+        var desiredAngle = this.getTargetAngle(globalData.inputGoX, globalData.inputGoY);
 
-        var distance = Math.sqrt((x * x) + (y * y));
-        x = x / distance;
-        y = y / distance;
-        
-        if (distance < 10) {
-            this.speed = 0;
-        } else if (distance < 20) {
-            this.speed = 100;
-        } else {
-            this.speed = 200;
-        }
-
-        var desiredAngle = Math.acos(x);        
-        if (y < 0) {
-            desiredAngle = -desiredAngle; 
-        }
-        desiredAngle += Math.PI / 2;
-        if (desiredAngle > Math.PI) {
-            desiredAngle -= 2 * Math.PI;
-        }
-        if (desiredAngle <= -Math.PI) {
-            desiredAngle += 2 * Math.PI;
-        }
-        
         var angleDiff = desiredAngle - this.angle;
         
         if (Math.abs(angleDiff) < 0.1) {
             this.turningSpeed = 0;
             this.targetAngle = null;
         } else {
-            var clockwise = false;
-            
-            if ((angleDiff > 0 && angleDiff < Math.PI) ||
-                (angleDiff < 0 && angleDiff < -Math.PI)) {
-                clockwise = true;
-            }
-            
-            if (clockwise) {
-                this.turningSpeed = 8;
-            } else {
-                this.turningSpeed = -8;
-            }
-            
+            this.setTurningSpeed(desiredAngle);
             this.targetAngle = desiredAngle;
         }
+
+        var distance = this.getDistance(globalData.inputGoX, globalData.inputGoY);
+
+        if (distance < 10) {
+            this.speed = 0;
+        } else if (distance < 20) {
+            this.speed = this.template.speed / 2;
+        } else {
+            this.speed = this.template.speed;
+        }
     } else {
-        //this.speed = 0;
         this.targetAngle = null;
     }
+}
+
+Player.prototype.getDistance = function(targetX, targetY) {
+    var x = targetX - this.x;
+    var y = targetY - this.y;
+
+    return Math.sqrt((x * x) + (y * y));
+}
+
+// TODO: change the name of this
+Player.prototype.getTargetAngle = function(targetX, targetY) {
+    var x = targetX - this.x;
+    var y = targetY - this.y;
+
+    var distance = Math.sqrt((x * x) + (y * y));
+    x = x / distance;
+    y = y / distance;
     
-    this.fireIfPossible = globalData.inputShoot;
-    
-    Unit.prototype.update.call(this, delta);
-    
-    this.moveInsideDrawingArea();
+    var desiredAngle = Math.acos(x);        
+    if (y < 0) {
+        desiredAngle = -desiredAngle; 
+    }
+    desiredAngle += Math.PI / 2;
+    if (desiredAngle > Math.PI) {
+        desiredAngle -= 2 * Math.PI;
+    }
+    if (desiredAngle <= -Math.PI) {
+        desiredAngle += 2 * Math.PI;
+    }
+
+    return desiredAngle;
+}
+
+Player.prototype.setTurningSpeed = function(desiredAngle) {
+    var angleDiff = desiredAngle - this.angle;
+
+    if ((angleDiff > 0 && angleDiff < Math.PI) ||
+        (angleDiff < 0 && angleDiff < -Math.PI)) {
+        this.turningSpeed = 8;
+    } else {
+        this.turningSpeed = -8;
+    }
 }
 
 // Stops the player leaving the screen
@@ -128,6 +202,8 @@ function PlayerTemplate() {
     this.spriteTemplate = null;
     this.spriteTemplateDead = null;
     this.weaponTemplate = null;
+    this.speed = 0;
+    this.hitPoints = 0;
 }
 
 PlayerTemplate.prototype.generate = function() {
@@ -137,7 +213,10 @@ PlayerTemplate.prototype.generate = function() {
 PlayerTemplate.prototype.clone = function() {
     var clone = new PlayerTemplate();
     clone.spriteTemplate = this.spriteTemplate;
+    clone.spriteTemplateDead = this.spriteTemplateDead;
     clone.weaponTemplate = this.weaponTemplate;
+    clone.speed = this.Speed;
+    clone.hitPoints = this.hitPoints;
     return clone;
 }
 
