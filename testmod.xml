@@ -58,12 +58,12 @@
     <decorationTemplates>
         <decorationTemplate name="bigstar">
             <spriteTemplate src="bigstar" />
-            <speed>200</speed>
+            <speed>130</speed>
             <turningSpeed>0</turningSpeed>
         </decorationTemplate>
         <decorationTemplate name="smallstar">
             <spriteTemplate src="smallstar" />
-            <speed>200</speed>
+            <speed>160</speed>
             <turningSpeed>0</turningSpeed>
         </decorationTemplate>
     </decorationTemplates>
@@ -90,7 +90,7 @@
             <spriteTemplate src="missile" />
             <spriteTemplateDead src="missile_dead" />
             <reloadTime>2000</reloadTime>
-            <speed>200</speed>
+            <speed>210</speed>
             <damage>20</damage>
         </weaponTemplate>
     </weaponTemplates>
@@ -107,12 +107,12 @@
         <levelTemplate name="test_level">
             <entityFactory>
                 <decorationTemplate src="bigstar" />
-                <avgNumPerSecond>2</avgNumPerSecond>
+                <avgNumPerSecond>1.5</avgNumPerSecond>
                 <initialAngle>3.14159</initialAngle>
             </entityFactory>
             <entityFactory>
                 <decorationTemplate src="smallstar" />
-                <avgNumPerSecond>4</avgNumPerSecond>
+                <avgNumPerSecond>3</avgNumPerSecond>
                 <initialAngle>3.14159</initialAngle>
             </entityFactory>
             <entityFactory>

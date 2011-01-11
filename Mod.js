@@ -204,10 +204,10 @@ Mod.prototype.parseDecorationTemplateNode = function(node, entity) {
                 entity.spriteTemplate = this.parseTemplateNode(childNode, 'spriteTemplate');
                 break;
             case "speed":
-                entity.speed = childNode.childNodes[0].nodeValue;
+                entity.speed = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "turningSpeed":
-                entity.turningSpeed = childNode.childNodes[0].nodeValue;
+                entity.turningSpeed = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             default:    
                 break;
@@ -235,10 +235,10 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
                 entity.weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
                 break;
             case "speed":
-                entity.speed = childNode.childNodes[0].nodeValue;
+                entity.speed = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "hitPoints":
-                entity.hitPoints = childNode.childNodes[0].nodeValue;
+                entity.hitPoints = parseInt(childNode.childNodes[0].nodeValue);
             default:    
                 break;
         }
@@ -262,13 +262,13 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
                 entity.spriteTemplateDead = this.parseTemplateNode(childNode, 'spriteTemplate');
                 break;
             case "reloadTime":
-                entity.reloadTime = childNode.childNodes[0].nodeValue;
+                entity.reloadTime = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "speed":
-                entity.speed = childNode.childNodes[0].nodeValue;
+                entity.speed = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "damage":
-                entity.damage = childNode.childNodes[0].nodeValue;
+                entity.damage = parseInt(childNode.childNodes[0].nodeValue);
                 break;
             default:    
                 break;
@@ -298,10 +298,10 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
                     
                     switch (efChildNode.nodeName) {
                         case "avgNumPerSecond":
-                            avgNumPerSecond = efChildNode.childNodes[0].nodeValue;
+                            avgNumPerSecond = parseFloat(efChildNode.childNodes[0].nodeValue);
                             break;
                         case "initialAngle":
-                            initialAngle = efChildNode.childNodes[0].nodeValue;
+                            initialAngle = parseFloat(efChildNode.childNodes[0].nodeValue);
                             break;
                             
                         case "decorationTemplate":
@@ -345,10 +345,10 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
                 entity.weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
                 break;
             case "speed":
-                entity.speed = childNode.childNodes[0].nodeValue;
+                entity.speed = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "hitPoints":
-                entity.hitPoints = childNode.childNodes[0].nodeValue;
+                entity.hitPoints = parseInt(childNode.childNodes[0].nodeValue);
                 break;
             default:    
                 break;
