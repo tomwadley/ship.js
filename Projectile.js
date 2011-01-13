@@ -23,12 +23,33 @@ function Projectile(weapon, zorder) {
     this.weapon_ = weapon;
     
     this.sprite = new Sprite(weapon.weaponTemplate.spriteTemplate);
-    this.x = weapon.getUnit().x + weapon.offsetX;
-    this.y = weapon.getUnit().y + weapon.offsetY;
     this.zorder = zorder;
-    this.angle = weapon.getUnit().angle + weapon.offsetAngle;
+    this.angle = weapon.getUnit().angle - weapon.weaponTemplate.offsetAngle;
     this.speed = weapon.weaponTemplate.speed;
     this.movementAngle = this.angle;
+
+    this.x = weapon.getUnit().x;
+    this.y = weapon.getUnit().y;
+
+    if (weapon.weaponTemplate.xPositionPrc != 0 && weapon.weaponTemplate.yPositionPrc != 0) {
+        var unitsToOffsetX = (weapon.getUnit().width() / 2) * weapon.weaponTemplate.xPositionPrc;
+        var unitsToOffsetY = (weapon.getUnit().height() / 2) * weapon.weaponTemplate.yPositionPrc;
+
+        var unitsToOffset = Math.sqrt((unitsToOffsetX * unitsToOffsetX) + (unitsToOffsetY * unitsToOffsetY));
+
+        var angleToOffset = Math.atan(unitsToOffsetY / unitsToOffsetX);
+        if (unitsToOffsetX < 0) angleToOffset += Math.PI;
+        angleToOffset += Math.PI / 2;
+
+        var adjustedAngle = weapon.getUnit().angle + angleToOffset;
+        //this.getUnit().angle
+
+        var offsetX = unitsToOffset * Math.sin(adjustedAngle);
+        var offsetY = unitsToOffset * Math.cos(adjustedAngle);
+
+        this.x += offsetX;
+        this.y += offsetY;
+    }
     
     this.dying = false;
 }

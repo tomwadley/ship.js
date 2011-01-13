@@ -85,6 +85,9 @@
             <reloadTime>120</reloadTime>
             <speed>400</speed>
             <damage>10</damage>
+            <xPositionPrc>0</xPositionPrc>
+            <yPositionPrc>1</yPositionPrc>
+            <offsetAngle>0</offsetAngle>
         </weaponTemplate>
         <weaponTemplate name="missile">
             <spriteTemplate src="missile" />
@@ -92,6 +95,9 @@
             <reloadTime>2000</reloadTime>
             <speed>210</speed>
             <damage>20</damage>
+            <xPositionPrc>0</xPositionPrc>
+            <yPositionPrc>1</yPositionPrc>
+            <offsetAngle>0</offsetAngle>
         </weaponTemplate>
     </weaponTemplates>
 

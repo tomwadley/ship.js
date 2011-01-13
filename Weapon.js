@@ -21,10 +21,6 @@ function Weapon(weaponTemplate, unit) {
     this.weaponTemplate = weaponTemplate;
     this.unit_ = unit;
     
-    this.offsetX = 0;
-    this.offsetY = 0;
-    this.offsetAngle = 0;
-    
     this.timeUntilNextFire = 0;
 }
 
@@ -52,13 +48,15 @@ Weapon.prototype.getUnit = function() {
     return this.unit_;
 }
 
-
 function WeaponTemplate() {
     this.spriteTemplate = null;
     this.spriteTemplateDead = null;
     this.reloadTime = 0;
     this.speed = 0;
     this.damage = 0;
+    this.xPositionPrc = 0;
+    this.yPositionPrc = 0;
+    this.offsetAngle = 0;
 }
 
 WeaponTemplate.prototype.clone = function() {
@@ -68,6 +66,9 @@ WeaponTemplate.prototype.clone = function() {
     clone.reloadTime = this.reloadTime;
     clone.speed = this.speed;
     clone.damage = this.damage;
+    clone.xPositionPrc = this.xPositionPrc;
+    clone.yPositionPrc = this.yPositionPrc;
+    clone.offsetAngle = this.offsetAngle;
     return clone;
 }
 

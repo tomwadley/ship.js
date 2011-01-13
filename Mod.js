@@ -270,6 +270,15 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
             case "damage":
                 entity.damage = parseInt(childNode.childNodes[0].nodeValue);
                 break;
+            case "xPositionPrc":
+                entity.xPositionPrc = parseFloat(childNode.childNodes[0].nodeValue);
+                break;
+            case "yPositionPrc":
+                entity.yPositionPrc = parseFloat(childNode.childNodes[0].nodeValue);
+                break;
+            case "offsetAngle":
+                entity.offsetAngle = parseFloat(childNode.childNodes[0].nodeValue);
+                break;
             default:    
                 break;
         }
