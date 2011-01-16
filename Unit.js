@@ -22,9 +22,9 @@ Unit.prototype.constructor = Entity;
 function Unit() {
     this.fireIfPossible = false;
     
-    this.weapon = null;
     this.hitPoints = 0;
 
+    this.weapons_ = null;
     this.dying_ = false;
 }
 
@@ -58,12 +58,21 @@ Unit.prototype.isDead = function() {
 
 Unit.prototype.getSpriteTemplateDead = function() {}
 
+Unit.prototype.addWeapon = function(weapon) {
+    if (this.weapons_ == null) {
+        this.weapons_ = [];
+    }
+    this.weapons_[this.weapons_.length] = weapon;
+}
+
 Unit.prototype.update = function(delta) {
-    if (this.weapon != null) {
-        this.weapon.update(delta);
-        
-        if (this.fireIfPossible && this.weapon.canWeaponFire()) {
-            this.weapon.fireIfPossible();
+    if (this.weapons_ != null) {
+        for (var i = 0; i < this.weapons_.length; i++) {
+            this.weapons_[i].update(delta);
+
+            if (this.fireIfPossible && this.weapons_[i].canWeaponFire()) {
+                this.weapons_[i].fireIfPossible();
+            }
         }
     }
 

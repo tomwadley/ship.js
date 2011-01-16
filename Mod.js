@@ -221,6 +221,7 @@ Mod.prototype.parseDecorationTemplateNode = function(node, entity) {
 }
 
 Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
+    var weaponTemplatesLoaded = true;
     for (var i = 0; i < node.childNodes.length; i++) {
         var childNode = node.childNodes[i];
         
@@ -232,7 +233,15 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
                 entity.spriteTemplateDead = this.parseTemplateNode(childNode, 'spriteTemplate');
                 break;
             case "weaponTemplate":
-                entity.weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
+                weaponTemplatesLoaded = false;
+                var weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
+                if (weaponTemplate != null) {
+                    if (entity.weaponTemplates == null) {
+                        entity.weaponTemplates = [];
+                    }
+                    entity.weaponTemplates[entity.weaponTemplates.length] = weaponTemplate;
+                    weaponTemplatesLoaded = true;
+                }
                 break;
             case "speed":
                 entity.speed = parseFloat(childNode.childNodes[0].nodeValue);
@@ -244,7 +253,7 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
         }
     }
     
-    if (entity.spriteTemplate == null || entity.spriteTemplateDead == null || entity.weaponTemplate == null) {
+    if (entity.spriteTemplate == null || entity.spriteTemplateDead == null || !weaponTemplatesLoaded) {
         return false;
     }
     return true;
@@ -339,6 +348,7 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
 
 Mod.prototype.parsePlayerTemplateNode = function(node) {
     var entity = new PlayerTemplate();
+    var weaponTemplatesLoaded = true;
     
     for (var i = 0; i < node.childNodes.length; i++) {
         var childNode = node.childNodes[i];
@@ -351,7 +361,15 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
                 entity.spriteTemplateDead = this.parseTemplateNode(childNode, 'spriteTemplate');
                 break;
             case "weaponTemplate":
-                entity.weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
+                weaponTemplatesLoaded = false;
+                var weaponTemplate = this.parseTemplateNode(childNode, 'weaponTemplate');
+                if (weaponTemplate != null) {
+                    if (entity.weaponTemplates == null) {
+                        entity.weaponTemplates = [];
+                    }
+                    entity.weaponTemplates[entity.weaponTemplates.length] = weaponTemplate;
+                    weaponTemplatesLoaded = true;
+                }
                 break;
             case "speed":
                 entity.speed = parseFloat(childNode.childNodes[0].nodeValue);
@@ -366,7 +384,7 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
     
     this.playerTemplate = entity;
     
-    if (entity.spriteTemplate == null || entity.spriteTemplateDead == null || entity.weaponTemplateDead) {
+    if (entity.spriteTemplate == null || entity.spriteTemplateDead == null || !weaponTemplatesLoaded) {
         return false;
     }
     return true;

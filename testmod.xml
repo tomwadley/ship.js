@@ -41,10 +41,32 @@
                 <image>missile_dead-2.png</image>
             </images>
         </spriteTemplate>
+        <spriteTemplate name="fireball">
+            <images>
+                <image>fireball-1.png</image>
+                <image>fireball-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="fireball_dead">
+            <images>
+                <image>fireball_dead-1.png</image>
+                <image>fireball_dead-2.png</image>
+            </images>
+        </spriteTemplate>
         <spriteTemplate name="grey_enemy">
             <images>
                 <image>grey_enemy-1.png</image>
                 <image>grey_enemy-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="rust_enemy">
+            <images>
+                <image>rust_enemy-1.png</image>
+                <image>rust_enemy-2.png</image>
+                <image>rust_enemy-3.png</image>
+                <image>rust_enemy-4.png</image>
+                <image>rust_enemy-5.png</image>
+                <image>rust_enemy-6.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="explosion">
@@ -76,6 +98,22 @@
             <speed>50</speed>
             <hitPoints>40</hitPoints>
         </enemyTemplate>
+        <enemyTemplate name="rust_enemy">
+            <spriteTemplate src="rust_enemy" />
+            <spriteTemplateDead src="explosion" />
+            <weaponTemplate src="fireball">
+                <xPositionPrc>-0.3</xPositionPrc>
+                <yPositionPrc>1</yPositionPrc>
+                <offsetAngle>0.7</offsetAngle>
+            </weaponTemplate>
+            <weaponTemplate src="fireball">
+                <xPositionPrc>0.3</xPositionPrc>
+                <yPositionPrc>1</yPositionPrc>
+                <offsetAngle>-0.7</offsetAngle>
+            </weaponTemplate>
+            <speed>70</speed>
+            <hitPoints>20</hitPoints>
+        </enemyTemplate>
     </enemyTemplates>
     
     <weaponTemplates>
@@ -98,6 +136,13 @@
             <xPositionPrc>0</xPositionPrc>
             <yPositionPrc>1</yPositionPrc>
             <offsetAngle>0</offsetAngle>
+        </weaponTemplate>
+        <weaponTemplate name="fireball">
+            <spriteTemplate src="fireball" />
+            <spriteTemplateDead src="fireball_dead" />
+            <reloadTime>1000</reloadTime>
+            <speed>300</speed>
+            <damage>10</damage>
         </weaponTemplate>
     </weaponTemplates>
 
@@ -123,7 +168,12 @@
             </entityFactory>
             <entityFactory>
                 <enemyTemplate src="grey_enemy" />
-                <avgNumPerSecond>0.7</avgNumPerSecond>
+                <avgNumPerSecond>0.3</avgNumPerSecond>
+                <initialAngle>3.14159</initialAngle>
+            </entityFactory>
+            <entityFactory>
+                <enemyTemplate src="rust_enemy" />
+                <avgNumPerSecond>0.3</avgNumPerSecond>
                 <initialAngle>3.14159</initialAngle>
             </entityFactory>
         </levelTemplate>
