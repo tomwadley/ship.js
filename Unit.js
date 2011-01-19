@@ -36,7 +36,9 @@ Unit.prototype.takeDamage = function(hitPoints) {
     this.hitPoints -= hitPoints;
     if (this.hitPoints <= 0) {
         this.startDying();
+        return true;
     }
+    return false;
 }
 
 Unit.prototype.startDying = function() {

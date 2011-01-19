@@ -248,6 +248,8 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
                 break;
             case "hitPoints":
                 entity.hitPoints = parseInt(childNode.childNodes[0].nodeValue);
+            case "cash":
+                entity.cash = parseInt(childNode.childNodes[0].nodeValue);
             default:    
                 break;
         }

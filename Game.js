@@ -40,7 +40,9 @@ var globalData = {
     // Current entities - not to be modified outside this file
     entities : [],
     // Entities to add
-    newEntities : []
+    newEntities : [],
+
+    cash : 0
 }
 
 function debug(str) {
@@ -157,6 +159,13 @@ function Game(canvasId) {
         for (var i = 0; i < globalData.entities.length; i++) {
             globalData.entities[i].render(context);
         }
+
+        // Display cash
+        context.fillStyle = '#009900';
+        context.font = '16px sans-serif';
+        context.textAlign = 'center';
+        context.textBaseline = 'top';
+        context.fillText('$' + globalData.cash, globalData.right / 2, 4);
         
         // Write the internal canvas to the output canvas
         outputContext.drawImage(canvas, 0, 0);

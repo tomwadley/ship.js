@@ -72,8 +72,12 @@ var collisionFunctions = [
     {typeA : Projectile.prototype.entityType, typeB : Enemy.prototype.entityType, func : 
     function(projectile, enemy) {
         if (projectile.getFiringUnit() == enemy) return;
-        enemy.takeDamage(projectile.getDamage());
         projectile.startDying();
+        if (enemy.takeDamage(projectile.getDamage())) {
+            if (projectile.getFiringUnit().entityType == Player.prototype.entityType) {
+                globalData.cash += enemy.template.cash;
+            }
+        }
     }},
     {typeA : Projectile.prototype.entityType, typeB : Player.prototype.entityType, func : 
     function(projectile, player) {
@@ -84,7 +88,9 @@ var collisionFunctions = [
     {typeA : Player.prototype.entityType, typeB : Enemy.prototype.entityType, func : 
     function(player, enemy) {
         player.takeDamage(10);
-        enemy.takeDamage(10);
+        if (enemy.takeDamage(10)) {
+            globalData.cash += enemy.template.cash;
+        }
     }}
 ]
 

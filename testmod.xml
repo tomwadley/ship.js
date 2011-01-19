@@ -97,6 +97,7 @@
             <weaponTemplate src="missile" />
             <speed>50</speed>
             <hitPoints>40</hitPoints>
+            <cash>100</cash>
         </enemyTemplate>
         <enemyTemplate name="rust_enemy">
             <spriteTemplate src="rust_enemy" />
@@ -113,6 +114,7 @@
             </weaponTemplate>
             <speed>70</speed>
             <hitPoints>20</hitPoints>
+            <cash>75</cash>
         </enemyTemplate>
     </enemyTemplates>
     
