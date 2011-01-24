@@ -32,7 +32,7 @@ function Player (playerTemplate) {
     }
 }
 
-Enemy.prototype.entityType = "Player";
+Player.prototype.entityType = "Player";
 
 Player.prototype.update = function(delta) {
     this.movementAngle = this.angle;
