@@ -128,6 +128,7 @@
             <xPositionPrc>0</xPositionPrc>
             <yPositionPrc>1</yPositionPrc>
             <offsetAngle>0</offsetAngle>
+            <fireSound>test.ogg</fireSound>
         </weaponTemplate>
         <weaponTemplate name="missile">
             <spriteTemplate src="missile" />

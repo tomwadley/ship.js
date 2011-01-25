@@ -5,6 +5,7 @@
 
 <script type="text/javascript" src="Mod.js"></script>
 <script type="text/javascript" src="UserInput.js"></script>
+<script type="text/javascript" src="Sound.js"></script>
 <script type="text/javascript" src="EntityFactory.js"></script>
 <script type="text/javascript" src="Sprite.js"></script>
 <script type="text/javascript" src="Entity.js"></script>
@@ -38,7 +39,6 @@ window.onload = init;
 
 </head>
 <body>
-<p>A port of Ship to html5. A work in progress.. Use the arrow keys to move. Press left ctrl to shoot. Press r to switch toggle free range mode.</p>
 <canvas id="shipCanvas" width="400" height="500">
 Your browser does not support the canvas element
 </canvas>
@@ -47,6 +47,13 @@ Your browser does not support the canvas element
 <button onclick="game.pause()">Pause</button>
 <button onclick="showStats()">Stats</button>
 </p>
+<p>A port of Ship to html5. A work in progress..</p>
+<ul>
+<li>Use the arrow keys to move (You can also use left click) </li>
+<li>Press left ctrl to shoot. </li>
+<li>Press r to switch toggle free range mode. Makes it harder but it's fun.</li>
+<li>Press s to toggle sound (experimental: you may need a beta or nightly build of your browser for good results)</li>
+</ul>
 <p id="debug"></p>
 </body>
 </html>

@@ -41,6 +41,9 @@ function keyPressHandler(event) {
         case 'r': 
             globalData.freeRangeMode = !globalData.freeRangeMode;
             break;
+        case 's': 
+            globalData.playSound = !globalData.playSound;
+            break;
         default:
             break;
     }

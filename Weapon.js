@@ -57,6 +57,7 @@ function WeaponTemplate() {
     this.xPositionPrc = 0;
     this.yPositionPrc = 0;
     this.offsetAngle = 0;
+    this.fireSound = null;
 }
 
 WeaponTemplate.prototype.clone = function() {

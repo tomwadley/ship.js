@@ -21,6 +21,10 @@ Projectile.prototype = new Entity();
 Projectile.prototype.constructor = Entity;
 function Projectile(weapon, zorder) {
     this.weapon_ = weapon;
+
+    if (weapon.weaponTemplate.fireSound != null) {
+        playSound(weapon.weaponTemplate.fireSound);
+    }
     
     this.sprite = new Sprite(weapon.weaponTemplate.spriteTemplate);
     this.zorder = zorder;

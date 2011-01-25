@@ -36,11 +36,14 @@ var globalData = {
     inputGoY : 0,
 
     freeRangeMode : false,
+    playSound : false,
     
     // Current entities - not to be modified outside this file
     entities : [],
     // Entities to add
     newEntities : [],
+
+    sounds : null,
 
     cash : 0
 }

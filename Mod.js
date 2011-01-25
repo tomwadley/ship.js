@@ -290,6 +290,11 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
             case "offsetAngle":
                 entity.offsetAngle = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
+            case "fireSound":
+                var temp = new SoundTemplate();
+                temp.filename = childNode.childNodes[0].nodeValue;
+                entity.fireSound = temp;
+                break;
             default:    
                 break;
         }
