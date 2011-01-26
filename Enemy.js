@@ -48,6 +48,7 @@ function EnemyTemplate() {
     this.speed = 0;
     this.hitPoints = 0;
     this.cash = 0;
+    this.deadSound = null;
 }
 
 EnemyTemplate.prototype.generate = function() {
@@ -62,6 +63,7 @@ EnemyTemplate.prototype.clone = function() {
     clone.speed = this.speed;
     clone.hitPoints = this.hitPoints;
     clone.cash = this.cash;
+    clone.deadSound = this.deadSound;
     return clone;
 }
 

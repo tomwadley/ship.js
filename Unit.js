@@ -46,9 +46,14 @@ Unit.prototype.startDying = function() {
         return;
     }
     this.dying_ = true;
+
     this.sprite = new Sprite(this.template.spriteTemplateDead);
     this.sprite.loop = false;
     this.speed = 0;
+
+    if (this.template.deadSound != null) {
+        playSound(this.template.deadSound)
+    }
 }
 
 Unit.prototype.isDead = function() {

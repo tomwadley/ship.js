@@ -98,6 +98,7 @@
             <speed>50</speed>
             <hitPoints>40</hitPoints>
             <cash>100</cash>
+            <deadSound>explosion.ogg</deadSound>
         </enemyTemplate>
         <enemyTemplate name="rust_enemy">
             <spriteTemplate src="rust_enemy" />
@@ -115,6 +116,7 @@
             <speed>70</speed>
             <hitPoints>20</hitPoints>
             <cash>75</cash>
+            <deadSound>explosion.ogg</deadSound>
         </enemyTemplate>
     </enemyTemplates>
     
@@ -128,7 +130,7 @@
             <xPositionPrc>0</xPositionPrc>
             <yPositionPrc>1</yPositionPrc>
             <offsetAngle>0</offsetAngle>
-            <fireSound>test.ogg</fireSound>
+            <fireSound>plasma_fire.ogg</fireSound>
         </weaponTemplate>
         <weaponTemplate name="missile">
             <spriteTemplate src="missile" />

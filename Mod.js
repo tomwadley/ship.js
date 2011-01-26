@@ -250,6 +250,11 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
                 entity.hitPoints = parseInt(childNode.childNodes[0].nodeValue);
             case "cash":
                 entity.cash = parseInt(childNode.childNodes[0].nodeValue);
+            case "deadSound":
+                var temp = new SoundTemplate();
+                temp.filename = childNode.childNodes[0].nodeValue;
+                entity.deadSound = temp;
+                break;
             default:    
                 break;
         }
