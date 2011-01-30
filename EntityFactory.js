@@ -20,7 +20,15 @@
 function EntityFactory(template, avgNumPerSecond) {
     this.template = template;
     this.avgNumPerSecond = avgNumPerSecond;
+    this.spawnFrom = EntityFactory.spawnFromEnum.TOP;
     this.initialAngle = 0;
+}
+
+EntityFactory.spawnFromEnum = {
+    TOP: 0,
+    BOTTOM: 1,
+    LEFT: 2,
+    RIGHT: 3
 }
 
 EntityFactory.prototype.tryGenerate = function(delta, zorder) {
@@ -30,11 +38,32 @@ EntityFactory.prototype.tryGenerate = function(delta, zorder) {
         var entity = this.template.generate();
         globalData.newEntities.push(entity);
         
-        entity.x = Math.floor(Math.random() * globalData.right + globalData.left);;
-        entity.y = globalData.top;
+        switch (this.spawnFrom) {
+            case EntityFactory.spawnFromEnum.TOP:
+                entity.x = EntityFactory.getRandomEntityPosition(globalData.left, globalData.right, entity.width());
+                entity.y = globalData.top - (entity.height() / 2) + 1;
+                break;
+            case EntityFactory.spawnFromEnum.BOTTOM:
+                entity.x = EntityFactory.getRandomEntityPosition(globalData.left, globalData.right, entity.width());
+                entity.y = globalData.bottom + (entity.height() / 2) - 1;
+                break;
+            case EntityFactory.spawnFromEnum.LEFT:
+                entity.x = globalData.left - (entity.width() / 2) + 1;
+                entity.y = EntityFactory.getRandomEntityPosition(globalData.top, globalData.bottom, entity.height());
+                break;
+            case EntityFactory.spawnFromEnum.RIGHT:
+                entity.x = globalData.right + (entity.width() / 2) - 1;
+                entity.y = EntityFactory.getRandomEntityPosition(globalData.top, globalData.bottom, entity.height());
+                break;
+        }
+
         entity.angle = this.initialAngle;
         entity.movementAngle = this.initialAngle;
         entity.zorder = zorder;
     }
+}
+
+EntityFactory.getRandomEntityPosition = function(from, to, entitySize) {
+    return Math.floor((Math.random() * (to - entitySize)) + (entitySize / 2) + from);
 }
 

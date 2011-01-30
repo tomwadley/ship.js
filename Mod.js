@@ -334,6 +334,7 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
             case "entityFactory":
                 var template;
                 var avgNumPerSecond;
+                var spawnFrom;
                 var initialAngle;
                 
                 for (var j = 0; j < childNode.childNodes.length; j++) {
@@ -342,6 +343,9 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
                     switch (efChildNode.nodeName) {
                         case "avgNumPerSecond":
                             avgNumPerSecond = parseFloat(efChildNode.childNodes[0].nodeValue);
+                            break;
+                        case "spawnFrom":
+                            spawnFrom = efChildNode.childNodes[0].nodeValue;
                             break;
                         case "initialAngle":
                             initialAngle = parseFloat(efChildNode.childNodes[0].nodeValue);
@@ -357,6 +361,7 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
                 }
                 
                 var entityFactory = new EntityFactory(template, avgNumPerSecond);
+                entityFactory.spawnFrom = EntityFactory.spawnFromEnum[spawnFrom.toUpperCase()];
                 entityFactory.initialAngle = initialAngle;
                 entity.entityFactories.push(entityFactory);
                 if (entityFactory.template == null) {
