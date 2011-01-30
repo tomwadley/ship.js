@@ -99,6 +99,7 @@
             <hitPoints>40</hitPoints>
             <cash>100</cash>
             <deadSound>explosion.ogg</deadSound>
+            <collissionSound>enemy_collission.ogg</collissionSound>
         </enemyTemplate>
         <enemyTemplate name="rust_enemy">
             <spriteTemplate src="rust_enemy" />
@@ -117,6 +118,7 @@
             <hitPoints>20</hitPoints>
             <cash>75</cash>
             <deadSound>explosion.ogg</deadSound>
+            <collissionSound>enemy_collission.ogg</collissionSound>
         </enemyTemplate>
     </enemyTemplates>
     
@@ -157,6 +159,8 @@
         <weaponTemplate src="plasma" />
         <speed>250</speed>
         <hitPoints>100</hitPoints>
+        <deadSound>explosion.ogg</deadSound>
+        <collissionSound>player_collission.ogg</collissionSound>
     </playerTemplate>
     
     <levelTemplates>

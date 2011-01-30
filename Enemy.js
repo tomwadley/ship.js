@@ -49,6 +49,7 @@ function EnemyTemplate() {
     this.hitPoints = 0;
     this.cash = 0;
     this.deadSound = null;
+    this.collissionSound = null;
 }
 
 EnemyTemplate.prototype.generate = function() {

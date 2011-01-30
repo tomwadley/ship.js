@@ -34,11 +34,18 @@ Unit.prototype.canCollide = function() {
 
 Unit.prototype.takeDamage = function(hitPoints) {
     this.hitPoints -= hitPoints;
+    
     if (this.hitPoints <= 0) {
         this.startDying();
         return true;
     }
     return false;
+}
+
+Unit.prototype.playCollissionSound = function() {
+    if (this.template.collissionSound != null) {
+        playSound(this.template.collissionSound)
+    }
 }
 
 Unit.prototype.startDying = function() {

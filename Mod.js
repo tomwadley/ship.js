@@ -24,6 +24,7 @@ function Mod(modURI) {
     this.loaded = false;
     
     this.spriteTemplates = new Object();
+    this.soundTemplates = new Object();
     this.decorationTemplates = new Object();
     this.enemyTemplates = new Object();
     this.weaponTemplates = new Object();
@@ -56,6 +57,9 @@ Mod.prototype.parseRootNode = function(rootNode) {
         switch (rootNode.childNodes[i].nodeName) {
             case "spriteTemplates":
                 this.parseTemplateCollectionNode(childNode, "spriteTemplate");
+                break;
+            case "soundTemplates":
+                this.parseTemplateCollectionNode(childNode, "soundTemplate");
                 break;
             case "decorationTemplates":
                 this.parseTemplateCollectionNode(childNode, "decorationTemplate");
@@ -100,6 +104,11 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
             templateType = SpriteTemplate;
             templateList = this.spriteTemplates;
             parseFunc = this.parseSpriteTemplateNode;
+            break;
+        case "soundTemplate":
+            templateType = SoundTemplate;
+            templateList = this.soundTemplates;
+            parseFunc = this.parseSoundTemplateNode;
             break;
         case "decorationTemplate":
             templateType = DecorationTemplate;
@@ -195,6 +204,11 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
     return true;
 }
 
+Mod.prototype.parseSoundTemplateNode = function(node, entity) {
+    entity.filename = node.childNodes[0].nodeValue;
+    return true;
+}
+
 Mod.prototype.parseDecorationTemplateNode = function(node, entity) {
     for (var i = 0; i < node.childNodes.length; i++) {
         var childNode = node.childNodes[i];
@@ -251,9 +265,10 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
             case "cash":
                 entity.cash = parseInt(childNode.childNodes[0].nodeValue);
             case "deadSound":
-                var temp = new SoundTemplate();
-                temp.filename = childNode.childNodes[0].nodeValue;
-                entity.deadSound = temp;
+                entity.deadSound = this.parseTemplateNode(childNode, 'soundTemplate');
+                break;
+            case "collissionSound":
+                entity.collissionSound = this.parseTemplateNode(childNode, 'soundTemplate');
                 break;
             default:    
                 break;
@@ -296,9 +311,7 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
                 entity.offsetAngle = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "fireSound":
-                var temp = new SoundTemplate();
-                temp.filename = childNode.childNodes[0].nodeValue;
-                entity.fireSound = temp;
+                entity.fireSound = this.parseTemplateNode(childNode, 'soundTemplate');
                 break;
             default:    
                 break;
@@ -388,6 +401,12 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
                 break;
             case "hitPoints":
                 entity.hitPoints = parseInt(childNode.childNodes[0].nodeValue);
+                break;
+            case "deadSound":
+                entity.deadSound = this.parseTemplateNode(childNode, 'soundTemplate');
+                break;
+            case "collissionSound":
+                entity.collissionSound = this.parseTemplateNode(childNode, 'soundTemplate');
                 break;
             default:    
                 break;

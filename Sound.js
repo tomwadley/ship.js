@@ -40,7 +40,7 @@ function playSound(soundTemplate) {
         audio = new Audio(soundTemplate.filename);
         audioList[audioList.length] = audio;
         pos = audioList.length - 1;
-        debug("New sound slot created for: " + soundTemplate.filename);
+        //debug("New sound slot created for: " + soundTemplate.filename);
     }
     
     audio.play();

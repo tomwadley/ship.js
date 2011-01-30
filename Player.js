@@ -209,6 +209,8 @@ function PlayerTemplate() {
     this.weaponTemplates = null;
     this.speed = 0;
     this.hitPoints = 0;
+    this.deadSound = null;
+    this.collissionSound = null;
 }
 
 PlayerTemplate.prototype.generate = function() {
