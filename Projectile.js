@@ -36,19 +36,27 @@ function Projectile(weapon, zorder) {
     this.y = weapon.getUnit().y;
 
     if (weapon.weaponTemplate.xPositionPrc != 0 || weapon.weaponTemplate.yPositionPrc != 0) {
-        var unitsToOffsetX = (weapon.getUnit().width() / 2) * weapon.weaponTemplate.xPositionPrc;
+        var unitsToOffsetX = (weapon.getUnit().width() / 2) * -weapon.weaponTemplate.xPositionPrc;
         var unitsToOffsetY = (weapon.getUnit().height() / 2) * weapon.weaponTemplate.yPositionPrc;
 
         var unitsToOffset = Math.sqrt((unitsToOffsetX * unitsToOffsetX) + (unitsToOffsetY * unitsToOffsetY));
 
-        var angleToOffset = Math.atan(unitsToOffsetY / unitsToOffsetX);
+        var angleToOffset;
+        if (unitsToOffsetX == 0) {
+            angleToOffset = Math.PI / 2;
+            if (unitsToOffsetY < 0) {
+                angleToOffset = -angleToOffset;
+            }
+        } else {
+            angleToOffset = Math.atan(unitsToOffsetY / unitsToOffsetX);
+        }
+
         if (unitsToOffsetX < 0) angleToOffset += Math.PI;
         angleToOffset += Math.PI / 2;
 
         var adjustedAngle = weapon.getUnit().angle + angleToOffset;
-        //this.getUnit().angle
 
-        var offsetX = unitsToOffset * Math.sin(adjustedAngle);
+        var offsetX = -unitsToOffset * Math.sin(adjustedAngle);
         var offsetY = unitsToOffset * Math.cos(adjustedAngle);
 
         this.x += offsetX;
