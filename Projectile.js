@@ -35,7 +35,7 @@ function Projectile(weapon, zorder) {
     this.x = weapon.getUnit().x;
     this.y = weapon.getUnit().y;
 
-    if (weapon.weaponTemplate.xPositionPrc != 0 && weapon.weaponTemplate.yPositionPrc != 0) {
+    if (weapon.weaponTemplate.xPositionPrc != 0 || weapon.weaponTemplate.yPositionPrc != 0) {
         var unitsToOffsetX = (weapon.getUnit().width() / 2) * weapon.weaponTemplate.xPositionPrc;
         var unitsToOffsetY = (weapon.getUnit().height() / 2) * weapon.weaponTemplate.yPositionPrc;
 
