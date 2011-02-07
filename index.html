@@ -3,6 +3,8 @@
 <head>
 <title>Ship</title>
 
+<link rel="stylesheet" type="text/css" href="ship.css" />
+
 <script type="text/javascript" src="Mod.js"></script>
 <script type="text/javascript" src="UserInput.js"></script>
 <script type="text/javascript" src="Sound.js"></script>
@@ -29,33 +31,40 @@ function init() {
     game.start();
 }
 
-function showStats() {
-    alert("Entities: " + globalData.entities.length);
-}
-
 window.onload = init;
 -->
 </script>
 
 </head>
 <body>
-<canvas id="shipCanvas" width="400" height="500">
-Your browser does not support the canvas element
-</canvas>
-<p>
-<button onclick="game.start()">Play</button>
-<button onclick="game.pause()">Pause</button>
-<button onclick="showStats()">Stats</button>
-</p>
-<p>An arcade style top scrolling game in HTML5. A work in progress..</p>
-<ul>
-<li>Use the arrow keys to move (You can also use left click) </li>
-<li>Press left ctrl to shoot. </li>
-<li>Press r to toggle free range mode. Makes it harder but it's fun.</li>
-<li>Press s to toggle sound (experimental: you may need a beta or nightly build of your browser for good results)</li>
-<li>Press p to pause (and again to resume)</li>
-</ul>
-<p id="debug"></p>
+<div id="content">
+<div id="gameArea">
+    <canvas id="shipCanvas" width="450" height="500">
+    Your browser does not support the canvas element
+    </canvas>
+</div>
+<div id="nonGameArea">
+    <div id="info">
+        <h1>Ship</h1>
+        <p>An arcade style top scrolling game in HTML5. A work in progress..</p>
+        <p><a href="http://tomwadley.net/ship/">tomwadley.net/ship</a></p>
+        <ul>
+            <li>Use the <strong>Arrow Keys</strong> to move (You can also use left click) </li>
+            <li>Press <strong>Control</strong> to shoot. </li>
+            <li>Press <strong>P</strong> to pause (and again to resume)</li>
+            <li>Press <strong>S</strong> to toggle sound (experimental: you may need a beta or nightly build of your browser for good results)</li>
+            <li>Press <strong>R</strong> to toggle free range mode. Makes it harder but it's fun.</li>
+        </ul>
+        <p>Ship is on github: <a href="https://github.com/tomwadley/ship">https://github.com/tomwadley/ship</a><br />
+        The version playable here is probably the latest commit on the master branch
+        </p>
+        <p>Contact me: tomwadley [at] fastmail [dot] fm</p>
+        <p>Ship is Copyright (C) 2010 Tom Wadley and released under the GNU GPL3</p> 
+
+        <p id="debug"></p>
+    </div>
+</div>
+</div>
 </body>
 </html>
 

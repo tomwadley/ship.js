@@ -56,6 +56,8 @@ function debug(str) {
 }
 
 function Game(canvasId) {
+    var HEALTH_BAR_WIDTH = 15;
+
     // Setup output context
     var outputCanvas = document.getElementById(canvasId);
     var outputContext = outputCanvas.getContext('2d');
@@ -81,7 +83,7 @@ function Game(canvasId) {
     // Setup globalData
     globalData.game = this;
     globalData.left = 0;
-    globalData.right = canvas.width;
+    globalData.right = canvas.width - HEALTH_BAR_WIDTH;
     globalData.top = 0;
     globalData.bottom = canvas.height;
     globalData.context = context;
@@ -176,6 +178,18 @@ function Game(canvasId) {
         context.textAlign = 'center';
         context.textBaseline = 'top';
         context.fillText('$' + globalData.cash, globalData.right / 2, 4);
+
+        // Display health bar
+        context.strokeStyle = '#009900';
+        context.lineWidth = 1;
+        context.strokeRect(globalData.right, globalData.top + 1, HEALTH_BAR_WIDTH - 1, globalData.bottom - 1);
+        if (player.hitPoints > 0) {
+            var totalHealthHeight = globalData.bottom - globalData.top - 2;
+            var healthPrc = player.hitPoints / player.template.hitPoints;
+            var healthTop = globalData.bottom - 1 - (totalHealthHeight * healthPrc);
+            context.fillStyle = '#009900';
+            context.fillRect(globalData.right, healthTop, HEALTH_BAR_WIDTH - 1, globalData.bottom - 1);
+        }
         
         // Write the internal canvas to the output canvas
         outputContext.drawImage(canvas, 0, 0);

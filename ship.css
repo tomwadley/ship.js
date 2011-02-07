@@ -1,11 +1,38 @@
 body {
-    overflow:hidden;
-    /*background: #d7d7d7;*/
-    margin:0;
-    padding:0;
+    overflow: hidden;
+    width: 1000px; 
+    margin: 0;
+    padding: 0;
+    margin-left: auto; 
+    margin-right: auto;
+    font-family: sans-serif;
 }
-#ship {
-    width: 320px;
-    height: 460px;
-    background:#000;
+
+#gameArea {
+    padding-left: 10px; 
+    padding-top: 20px; 
+    float: left;
 }
+
+#nonGameArea {
+    float: right; 
+    width: 490px; 
+    padding: 20px;
+}
+
+h1 {
+    font-size: 18pt
+}
+
+h2 {
+    font-size: 13pt
+}
+
+h3 {
+    font-size: 12pt
+}
+
+ul {
+    list-style: square;
+}
+
