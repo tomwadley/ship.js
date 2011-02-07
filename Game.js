@@ -18,6 +18,8 @@
  
  
 var globalData = {
+    game : null,
+
     // Drawing area dimensions
     left : 0,
     top : 0,
@@ -77,6 +79,7 @@ function Game(canvasId) {
     initUserInput(outputCanvas);
     
     // Setup globalData
+    globalData.game = this;
     globalData.left = 0;
     globalData.right = canvas.width;
     globalData.top = 0;
@@ -103,6 +106,10 @@ function Game(canvasId) {
             clearInterval(interval);
             interval = null;
         }
+    }
+
+    this.isPaused = function() {
+        return interval == null;
     }
 
     var gameLoop = function() {

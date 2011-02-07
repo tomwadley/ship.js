@@ -44,6 +44,13 @@ function keyPressHandler(event) {
         case 's': 
             globalData.playSound = !globalData.playSound;
             break;
+        case 'p': 
+            if (globalData.game.isPaused()) {
+                globalData.game.start();
+            } else {
+                globalData.game.pause();
+            }
+            break;
         default:
             break;
     }
