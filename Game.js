@@ -180,16 +180,8 @@ function Game(canvasId) {
         context.fillText('$' + globalData.cash, globalData.right / 2, 4);
 
         // Display health bar
-        context.strokeStyle = '#009900';
-        context.lineWidth = 1;
-        context.strokeRect(globalData.right, globalData.top + 1, HEALTH_BAR_WIDTH - 1, globalData.bottom - 1);
-        if (player.hitPoints > 0) {
-            var totalHealthHeight = globalData.bottom - globalData.top - 2;
-            var healthPrc = player.hitPoints / player.template.hitPoints;
-            var healthTop = globalData.bottom - 1 - (totalHealthHeight * healthPrc);
-            context.fillStyle = '#009900';
-            context.fillRect(globalData.right, healthTop, HEALTH_BAR_WIDTH - 1, globalData.bottom - 1);
-        }
+        var healthPrc = player.hitPoints / player.template.hitPoints;
+        DrawProgressBar(context, globalData.right, globalData.top + 2, HEALTH_BAR_WIDTH - 2, globalData.bottom - 3, healthPrc);
         
         // Write the internal canvas to the output canvas
         outputContext.drawImage(canvas, 0, 0);
