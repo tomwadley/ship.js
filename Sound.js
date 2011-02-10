@@ -37,7 +37,7 @@ function playSound(soundTemplate) {
     }
 
     if (audio == null) {
-        audio = new Audio(soundTemplate.filename);
+        audio = soundTemplate.createAudioElement();
         audioList[audioList.length] = audio;
         pos = audioList.length - 1;
         //debug("New sound slot created for: " + soundTemplate.filename);
@@ -50,8 +50,13 @@ function SoundTemplate() {
     this.filename = "";
 }
 
+SoundTemplate.prototype.createAudioElement = function() {
+    return new Audio(this.filename);
+}
+
 SoundTemplate.prototype.clone = function() {
     var clone = new SoundTemplate();
+    clone.filename = this.filename;
     return clone;
 }
 

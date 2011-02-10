@@ -21,7 +21,7 @@ function Mod(modURI) {
     
     this.modURI = modURI;
     
-    this.loaded = false;
+    this.parsed = false;
     
     this.spriteTemplates = new Object();
     this.soundTemplates = new Object();
@@ -30,8 +30,13 @@ function Mod(modURI) {
     this.weaponTemplates = new Object();
     this.levelTemplates = new Object();
     this.playerTemplate = null;
-    
-    this.load();
+
+    this.onLoad = null;
+    this.onError = null;
+
+    this.imagesLoaded = [];
+    this.audiosLoaded = [];
+    this.loaded = false;
 }
 
 Mod.prototype.load = function() {
@@ -45,10 +50,64 @@ Mod.prototype.load = function() {
     
     // Parse the xml until it's loaded
     var rootNode = xmlDoc.documentElement;
-    while (!this.loaded) {
-        this.loaded = true;
+    while (!this.parsed) {
+        this.parsed = true;
         this.parseRootNode(rootNode);
     }
+}
+
+Mod.prototype.isLoaded = function() {
+    if (this.loaded) {
+        return true;
+    }
+
+    if (this.loadPrc() == 1) {
+        return true;
+    }
+}
+
+Mod.prototype.loadPrc = function() {
+    var loadedCount = 0;
+    var total = this.imagesLoaded.length + this.audiosLoaded.length;
+    var i;
+
+    for (i = 0; i < this.imagesLoaded.length; i++) {
+        if (this.imagesLoaded[i]) {
+            loadedCount++;
+        }
+    }
+
+    for (i = 0; i < this.audiosLoaded.length; i++) {
+        if (this.audiosLoaded[i].readyState > 2) {
+            loadedCount++;
+        }
+    }
+
+    if (loadedCount == total) {
+        this.loaded = true;
+        this.imagesLoaded = [];
+        this.audiosLoaded = [];
+        return 1;
+    }
+    return loadedCount / total;
+}
+
+Mod.prototype.watchImageAsset = function(image) {
+    var nextIndex = this.imagesLoaded.length;
+    var imagesLoaded = this.imagesLoaded;
+
+    imagesLoaded[nextIndex] = false;
+    
+    image.onload = function() {
+        imagesLoaded[nextIndex] = true;
+    };
+}
+
+Mod.prototype.watchAudioAsset = function(audio) {
+    var nextIndex = this.audiosLoaded.length;
+    var audiosLoaded = this.audiosLoaded;
+
+    audiosLoaded[nextIndex] = audio;
 }
 
 Mod.prototype.parseRootNode = function(rootNode) {
@@ -75,7 +134,7 @@ Mod.prototype.parseRootNode = function(rootNode) {
                 break;
             case "playerTemplate":
                 if (!this.parsePlayerTemplateNode(childNode)) {
-                    this.loaded = false;
+                    this.parsed = false;
                 }    
                 break;
             default:
@@ -151,7 +210,7 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
         entitySrc = templateList[entitySrcName];
         // If the source hasn't been loaded yet, we'll need another pass
         if (entitySrc == null) {
-            this.loaded = false;
+            this.parsed = false;
             return;
         }
     }
@@ -171,7 +230,7 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
     // Call template specific function to parse node data into entity
     if (!parseFunc.call(this, node, entity)) {
         // A referenced entity isn't loaded yet, we'll need another pass
-        this.loaded = false;
+        this.parsed = false;
         return;
     }
     
@@ -193,6 +252,7 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
                 for (var j = 0; j < imageNodes.length; j++) {
                     var image = new Image();
                     image.src = imageNodes[j].childNodes[0].nodeValue;
+                    this.watchImageAsset(image);
                     entity.images.push(image);
                 }
                 break;
@@ -206,6 +266,11 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
 
 Mod.prototype.parseSoundTemplateNode = function(node, entity) {
     entity.filename = node.childNodes[0].nodeValue;
+    
+    var audio = entity.createAudioElement();
+    // TODO: Uncomment this when FF4 is released. FF3.6 hangs at the loading screen with this.
+    //this.watchAudioAsset(audio);
+
     return true;
 }
 
@@ -262,8 +327,10 @@ Mod.prototype.parseEnemyTemplateNode = function(node, entity) {
                 break;
             case "hitPoints":
                 entity.hitPoints = parseInt(childNode.childNodes[0].nodeValue);
+                break;
             case "cash":
                 entity.cash = parseInt(childNode.childNodes[0].nodeValue);
+                break;
             case "deadSound":
                 entity.deadSound = this.parseTemplateNode(childNode, 'soundTemplate');
                 break;

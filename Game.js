@@ -74,6 +74,7 @@ function Game(canvasId) {
     
     // Load Mod
     var mod = new Mod("testmod.xml");
+    mod.load();
     var level = new Level(mod.levelTemplates["test_level"]);
     var factories = level.template.entityFactories;
     
@@ -126,6 +127,7 @@ function Game(canvasId) {
 
     var update = function(delta) {
         if (delta == 0) return;
+        if (!mod.isLoaded()) return;
         
         // Update each entity
         for (var i = 0; i < globalData.entities.length; i++) {
@@ -161,27 +163,47 @@ function Game(canvasId) {
         // Clear canvas
         context.fillStyle = "rgb(0,0,0)";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        
-        if (globalData.inputGo) {
-            context.fillStyle = "rgb(255,0,0)";
-            context.fillRect(globalData.inputGoX - 5, globalData.inputGoY - 5, 10, 10);
-        }
-        
-        // Render each entity
-        for (var i = 0; i < globalData.entities.length; i++) {
-            globalData.entities[i].render(context);
-        }
 
-        // Display cash
-        context.fillStyle = '#009900';
-        context.font = '16px sans-serif';
-        context.textAlign = 'center';
-        context.textBaseline = 'top';
-        context.fillText('$' + globalData.cash, globalData.right / 2, 4);
+        if (mod.isLoaded()) {
+            if (globalData.inputGo) {
+                context.fillStyle = "rgb(255,0,0)";
+                context.fillRect(globalData.inputGoX - 5, globalData.inputGoY - 5, 10, 10);
+            }
+            
+            // Render each entity
+            for (var i = 0; i < globalData.entities.length; i++) {
+                globalData.entities[i].render(context);
+            }
 
-        // Display health bar
-        var healthPrc = player.hitPoints / player.template.hitPoints;
-        DrawProgressBar(context, globalData.right, globalData.top + 2, HEALTH_BAR_WIDTH - 2, globalData.bottom - 3, healthPrc);
+            // Display cash
+            context.fillStyle = '#009900';
+            context.font = '16px sans-serif';
+            context.textAlign = 'center';
+            context.textBaseline = 'top';
+            context.fillText('$' + globalData.cash, globalData.right / 2, 4);
+
+            // Display health bar
+            var healthPrc = player.hitPoints / player.template.hitPoints;
+            DrawProgressBar(context, globalData.right, globalData.top + 2, HEALTH_BAR_WIDTH - 2, globalData.bottom - 3, healthPrc);
+        } else {
+            // Display loading message
+            context.fillStyle = '#009900';
+            context.font = '24px sans-serif';
+            context.textAlign = 'center';
+            context.textBaseline = 'top';
+            context.fillText('Loading', outputCanvas.width / 2, outputCanvas.height / 3);
+
+            // Display loading bar
+            var LOADING_BAR_WIDTH = 15;
+            var height = outputCanvas.width / 2;
+            var y = -(3 * outputCanvas.width / 4);
+            var x = outputCanvas.height / 2;
+
+            context.save();
+            context.rotate(Math.PI / 2);
+            DrawProgressBar(context, x, y, LOADING_BAR_WIDTH, height, mod.loadPrc());
+            context.restore();
+        }
         
         // Write the internal canvas to the output canvas
         outputContext.drawImage(canvas, 0, 0);
