@@ -77,6 +77,9 @@ function Game(canvasId) {
     mod.load();
     var level = new Level(mod.levelTemplates["test_level"]);
     var factories = level.template.entityFactories;
+
+    // Create utils object
+    var utils = new Utils();
     
     // Setup user input
     initUserInput(outputCanvas);
@@ -108,11 +111,22 @@ function Game(canvasId) {
         if (interval) {
             clearInterval(interval);
             interval = null;
+
+            // Draw one frame to display the paused message
+            render();
         }
     }
 
     this.isPaused = function() {
         return interval == null;
+    }
+
+    this.totalCanvasWidth = function() {
+        return outputCanvas.width;
+    }
+
+    this.totalCanvasHeight = function() {
+        return outputCanvas.height;
     }
 
     var gameLoop = function() {
@@ -182,16 +196,17 @@ function Game(canvasId) {
             context.textBaseline = 'top';
             context.fillText('$' + globalData.cash, globalData.right / 2, 4);
 
+            // If paused, display paused message
+            if (globalData.game.isPaused()) {
+                utils.DisplayMessage(context, "Paused");
+            }
+
             // Display health bar
             var healthPrc = player.hitPoints / player.template.hitPoints;
-            DrawProgressBar(context, globalData.right, globalData.top + 2, HEALTH_BAR_WIDTH - 2, globalData.bottom - 3, healthPrc);
+            utils.DrawProgressBar(context, globalData.right, globalData.top + 2, HEALTH_BAR_WIDTH - 2, globalData.bottom - 3, healthPrc);
         } else {
             // Display loading message
-            context.fillStyle = '#009900';
-            context.font = '24px sans-serif';
-            context.textAlign = 'center';
-            context.textBaseline = 'top';
-            context.fillText('Loading', outputCanvas.width / 2, outputCanvas.height / 3);
+            utils.DisplayMessage(context, "Loading");
 
             // Display loading bar
             var LOADING_BAR_WIDTH = 15;
@@ -201,7 +216,7 @@ function Game(canvasId) {
 
             context.save();
             context.rotate(Math.PI / 2);
-            DrawProgressBar(context, x, y, LOADING_BAR_WIDTH, height, mod.loadPrc());
+            utils.DrawProgressBar(context, x, y, LOADING_BAR_WIDTH, height, mod.loadPrc());
             context.restore();
         }
         

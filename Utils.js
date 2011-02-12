@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function DrawProgressBar(context, x, y, width, height, prc) {
+function Utils() { }
+
+Utils.prototype.DrawProgressBar = function(context, x, y, width, height, prc) {
     var BAR_TO_BORDER_GAP = 3;
     var BAR_STYLE = '#009900';
     var BORDER_STYLE = '#009900';
@@ -41,5 +43,13 @@ function DrawProgressBar(context, x, y, width, height, prc) {
         context.fillStyle = BAR_STYLE;
         context.fillRect(barX, barY, barWidth, barHeight);
     }
+}
+
+Utils.prototype.DisplayMessage = function(context, message) {
+    context.fillStyle = '#009900';
+    context.font = '24px sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'top';
+    context.fillText(message, globalData.game.totalCanvasWidth() / 2, globalData.game.totalCanvasHeight() / 3);
 }
 
