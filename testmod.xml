@@ -169,25 +169,25 @@
                 <decorationTemplate src="bigstar" />
                 <avgNumPerSecond>1.5</avgNumPerSecond>
                 <spawnFrom>top</spawnFrom>
-                <initialAngle>3.14159</initialAngle>
+                <initialAngle src="down" />
             </entityFactory>
             <entityFactory>
                 <decorationTemplate src="smallstar" />
                 <avgNumPerSecond>3</avgNumPerSecond>
                 <spawnFrom>top</spawnFrom>
-                <initialAngle>3.14159</initialAngle>
+                <initialAngle src="down" />
             </entityFactory>
             <entityFactory>
                 <enemyTemplate src="grey_enemy" />
                 <avgNumPerSecond>0.3</avgNumPerSecond>
                 <spawnFrom>top</spawnFrom>
-                <initialAngle>3.14159</initialAngle>
+                <initialAngle src="down" />
             </entityFactory>
             <entityFactory>
                 <enemyTemplate src="rust_enemy" />
                 <avgNumPerSecond>0.3</avgNumPerSecond>
                 <spawnFrom>top</spawnFrom>
-                <initialAngle>3.14159</initialAngle>
+                <initialAngle src="down" />
             </entityFactory>
         </levelTemplate>
     </levelTemplates>

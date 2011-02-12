@@ -375,7 +375,7 @@ Mod.prototype.parseWeaponTemplateNode = function(node, entity) {
                 entity.yPositionPrc = parseFloat(childNode.childNodes[0].nodeValue);
                 break;
             case "offsetAngle":
-                entity.offsetAngle = parseFloat(childNode.childNodes[0].nodeValue);
+                entity.offsetAngle = this.parseAngle(childNode);
                 break;
             case "fireSound":
                 entity.fireSound = this.parseTemplateNode(childNode, 'soundTemplate');
@@ -415,7 +415,7 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
                             spawnFrom = efChildNode.childNodes[0].nodeValue;
                             break;
                         case "initialAngle":
-                            initialAngle = parseFloat(efChildNode.childNodes[0].nodeValue);
+                            initialAngle = this.parseAngle(efChildNode);
                             break;
                             
                         case "decorationTemplate":
@@ -491,5 +491,31 @@ Mod.prototype.parsePlayerTemplateNode = function(node) {
         return false;
     }
     return true;
+}
+
+Mod.angleEnum = {
+    UP: 0,
+    DOWN: Math.PI,
+    LEFT: Math.PI / 2,
+    RIGHT: -Math.PI / 2
+}
+
+Mod.prototype.parseAngle = function(node) {
+    var angle = NaN;
+
+    if (node.childNodes.length > 0) {
+        angle = parseFloat(node.childNodes[0].nodeValue);
+        if (angle != NaN) {
+            return angle;
+        }
+    }
+    
+    var entitySrcName = node.getAttribute('src');
+
+    if (entitySrcName != null) {
+        angle = Mod.angleEnum[entitySrcName.toUpperCase()];
+    }
+
+    return angle;
 }
 
