@@ -75,7 +75,16 @@ function Game(canvasId) {
     // Load Mod
     var mod = new Mod("testmod.xml");
     mod.load();
-    var level = new Level(mod.levelTemplates["test_level"]);
+    var levelTemplate;
+    for (var key in mod.levelTemplates) {
+        if (mod.levelTemplates[key].constructor == LevelTemplate) {
+            levelTemplate = mod.levelTemplates[key];
+        }
+    }
+    if (levelTemplate == null) {
+        alert("Couldn't find a level!");
+    }
+    var level = new Level(levelTemplate);
     var factories = level.template.entityFactories;
 
     // Create utils object

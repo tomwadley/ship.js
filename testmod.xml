@@ -3,76 +3,76 @@
     <spriteTemplates>
         <spriteTemplate name="bigstar">
             <images>
-                <image>bigstar-1.png</image>
+                <image seq="1">bigstar-1.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="smallstar">
             <images>
-                <image>smallstar-1.png</image>
+                <image seq="1">smallstar-1.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="blue_player">
             <images>
-                <image>blue_player-1.png</image>
-                <image>blue_player-2.png</image>
+                <image seq="1">blue_player-1.png</image>
+                <image seq="2">blue_player-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="plasma">
             <images>
-                <image>plasma-1.png</image>
-                <image>plasma-2.png</image>
+                <image seq="1">plasma-1.png</image>
+                <image seq="2">plasma-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="plasma_dead">
             <images>
-                <image>plasma_dead-1.png</image>
-                <image>plasma_dead-2.png</image>
+                <image seq="1">plasma_dead-1.png</image>
+                <image seq="2">plasma_dead-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="missile">
             <images>
-                <image>missile-1.png</image>
-                <image>missile-2.png</image>
+                <image seq="1">missile-1.png</image>
+                <image seq="2">missile-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="missile_dead">
             <images>
-                <image>missile_dead-1.png</image>
-                <image>missile_dead-2.png</image>
+                <image seq="1">missile_dead-1.png</image>
+                <image seq="2">missile_dead-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="fireball">
             <images>
-                <image>fireball-1.png</image>
-                <image>fireball-2.png</image>
+                <image seq="1">fireball-1.png</image>
+                <image seq="2">fireball-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="fireball_dead">
             <images>
-                <image>fireball_dead-1.png</image>
-                <image>fireball_dead-2.png</image>
+                <image seq="1">fireball_dead-1.png</image>
+                <image seq="2">fireball_dead-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="grey_enemy">
             <images>
-                <image>grey_enemy-1.png</image>
-                <image>grey_enemy-2.png</image>
+                <image seq="1">grey_enemy-1.png</image>
+                <image seq="2">grey_enemy-2.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="rust_enemy">
             <images>
-                <image>rust_enemy-1.png</image>
-                <image>rust_enemy-2.png</image>
-                <image>rust_enemy-3.png</image>
-                <image>rust_enemy-4.png</image>
-                <image>rust_enemy-5.png</image>
-                <image>rust_enemy-6.png</image>
+                <image seq="1">rust_enemy-1.png</image>
+                <image seq="2">rust_enemy-2.png</image>
+                <image seq="3">rust_enemy-3.png</image>
+                <image seq="4">rust_enemy-4.png</image>
+                <image seq="5">rust_enemy-5.png</image>
+                <image seq="6">rust_enemy-6.png</image>
             </images>
         </spriteTemplate>
         <spriteTemplate name="explosion">
             <images>
-                <image>explosion-1.png</image>
-                <image>explosion-2.png</image>
+                <image seq="1">explosion-1.png</image>
+                <image seq="2">explosion-2.png</image>
             </images>
         </spriteTemplate>
     </spriteTemplates>

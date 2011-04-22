@@ -22,6 +22,7 @@ function Mod(modURI) {
     this.modURI = modURI;
     
     this.parsed = false;
+    this.broken = false;
     
     this.spriteTemplates = new Object();
     this.soundTemplates = new Object();
@@ -50,9 +51,14 @@ Mod.prototype.load = function() {
     
     // Parse the xml until it's loaded
     var rootNode = xmlDoc.documentElement;
-    while (!this.parsed) {
+    while (!this.parsed && !this.broken) {
         this.parsed = true;
+        this.broken = true;
         this.parseRootNode(rootNode);
+    }
+
+    if (this.broken) {
+        alert("The mod file is broken!");
     }
 }
 
@@ -133,7 +139,7 @@ Mod.prototype.parseRootNode = function(rootNode) {
                 this.parseTemplateCollectionNode(childNode, "levelTemplate");
                 break;
             case "playerTemplate":
-                if (!this.parsePlayerTemplateNode(childNode)) {
+                if (this.playerTemplate == null && !this.parsePlayerTemplateNode(childNode)) {
                     this.parsed = false;
                 }    
                 break;
@@ -238,6 +244,9 @@ Mod.prototype.parseTemplateNode = function(node, nodeName) {
     if (entityName != null) {
         templateList[entityName] = entity;
     }
+
+    // If we don't make it this far in a single pass, the mod is broken
+    this.broken = false;
     
     return entity;
 }
@@ -249,11 +258,18 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
         switch (childNode.nodeName) {
             case "images":
                 var imageNodes = childNode.getElementsByTagName("image");
+                var images = [];
                 for (var j = 0; j < imageNodes.length; j++) {
                     var image = new Image();
+                    var seq = imageNodes[j].getAttribute("seq");
                     image.src = imageNodes[j].childNodes[0].nodeValue;
                     this.watchImageAsset(image);
-                    entity.images.push(image);
+                    images[seq] = image;
+                }
+                for (j = 0; j < images.length; j++) {
+                    if (images[j]) {
+                        entity.images.push(images[j]);
+                    }
                 }
                 break;
             default:    
@@ -269,7 +285,7 @@ Mod.prototype.parseSoundTemplateNode = function(node, entity) {
     
     var audio = entity.createAudioElement();
     // TODO: Uncomment this when FF4 is released. FF3.6 hangs at the loading screen with this.
-    //this.watchAudioAsset(audio);
+    this.watchAudioAsset(audio);
 
     return true;
 }
