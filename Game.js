@@ -55,7 +55,7 @@ function debug(str) {
     debugP.innerHTML += str + "<br />";
 }
 
-function Game(canvasId) {
+function Game(canvasId, modURI, assetPath) {
     var HEALTH_BAR_WIDTH = 15;
 
     // Setup output context
@@ -73,7 +73,7 @@ function Game(canvasId) {
     var prevTime = 0;
     
     // Load Mod
-    var mod = new Mod("testmod.xml");
+    var mod = new Mod(modURI, assetPath);
     mod.load();
     var levelTemplate;
     for (var key in mod.levelTemplates) {

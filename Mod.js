@@ -17,9 +17,13 @@
  */
  
  
-function Mod(modURI) {
+function Mod(modURI, assetPath) {
     
     this.modURI = modURI;
+    this.assetPath = assetPath;
+    if (this.assetPath.charAt(assetPath.length - 1) != '/') {
+        this.assetPath += '/';
+    }
     
     this.parsed = false;
     this.broken = false;
@@ -262,7 +266,7 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
                 for (var j = 0; j < imageNodes.length; j++) {
                     var image = new Image();
                     var seq = imageNodes[j].getAttribute("seq");
-                    image.src = imageNodes[j].childNodes[0].nodeValue;
+                    image.src = this.assetPath + imageNodes[j].childNodes[0].nodeValue;
                     this.watchImageAsset(image);
                     images[seq] = image;
                 }
@@ -281,10 +285,10 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
 }
 
 Mod.prototype.parseSoundTemplateNode = function(node, entity) {
-    entity.filename = node.childNodes[0].nodeValue;
+    entity.filename = this.assetPath + node.childNodes[0].nodeValue;
     
     var audio = entity.createAudioElement();
-    // TODO: Uncomment this when FF4 is released. FF3.6 hangs at the loading screen with this.
+    // NOTE: FF3.6 hangs at the loading screen with the next line. Works in FF4.
     this.watchAudioAsset(audio);
 
     return true;
