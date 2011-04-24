@@ -58,8 +58,8 @@ function keyPressHandler(event) {
 
 function mouseDownHandler(event) {
     globalData.inputGo = true;
-    globalData.inputGoX = event.offsetX;
-    globalData.inputGoY = event.offsetY;
+    globalData.inputGoX = event.clientX - event.currentTarget.offsetLeft;
+    globalData.inputGoY = event.clientY - event.currentTarget.offsetTop;
 }
 
 function mouseUpHandler(event) {
@@ -67,8 +67,8 @@ function mouseUpHandler(event) {
 }
 
 function mouseMoveHandler(event) {
-    globalData.inputGoX = event.offsetX;
-    globalData.inputGoY = event.offsetY;
+    globalData.inputGoX = event.clientX - event.currentTarget.offsetLeft;
+    globalData.inputGoY = event.clientY - event.currentTarget.offsetTop;
 }
 
 function setInputVar (keyCode, state) {
