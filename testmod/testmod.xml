@@ -76,6 +76,21 @@
             </images>
         </spriteTemplate>
     </spriteTemplates>
+
+    <soundTemplates>
+        <soundTemplate name="enemy_collission">
+            <filename>enemy_collission.ogg</filename>
+        </soundTemplate>
+        <soundTemplate name="plasma_fire">
+            <filename>plasma_fire.ogg</filename>
+        </soundTemplate>
+        <soundTemplate name="player_collission">
+            <filename>player_collission.ogg</filename>
+        </soundTemplate>
+        <soundTemplate name="explosion">
+            <filename>explosion.ogg</filename>
+        </soundTemplate>
+    </soundTemplates>
     
     <decorationTemplates>
         <decorationTemplate name="bigstar">
@@ -98,8 +113,8 @@
             <speed>50</speed>
             <hitPoints>40</hitPoints>
             <cash>100</cash>
-            <deadSound>explosion.ogg</deadSound>
-            <collissionSound>enemy_collission.ogg</collissionSound>
+            <deadSound src="explosion" />
+            <collissionSound src="enemy_collission" />
         </enemyTemplate>
         <enemyTemplate name="rust_enemy">
             <spriteTemplate src="rust_enemy" />
@@ -117,8 +132,8 @@
             <speed>70</speed>
             <hitPoints>20</hitPoints>
             <cash>75</cash>
-            <deadSound>explosion.ogg</deadSound>
-            <collissionSound>enemy_collission.ogg</collissionSound>
+            <deadSound src="explosion" />
+            <collissionSound src="enemy_collission" />
         </enemyTemplate>
     </enemyTemplates>
     
@@ -132,7 +147,7 @@
             <xPositionPrc>0</xPositionPrc>
             <yPositionPrc>1</yPositionPrc>
             <offsetAngle>0</offsetAngle>
-            <fireSound>plasma_fire.ogg</fireSound>
+            <fireSound src="plasma_fire" />
         </weaponTemplate>
         <weaponTemplate name="missile">
             <spriteTemplate src="missile" />
@@ -159,8 +174,8 @@
         <weaponTemplate src="plasma" />
         <speed>250</speed>
         <hitPoints>100</hitPoints>
-        <deadSound>explosion.ogg</deadSound>
-        <collissionSound>player_collission.ogg</collissionSound>
+        <deadSound src="explosion" />
+        <collissionSound src="player_collission" />
     </playerTemplate>
     
     <levelTemplates>

@@ -285,12 +285,25 @@ Mod.prototype.parseSpriteTemplateNode = function(node, entity) {
 }
 
 Mod.prototype.parseSoundTemplateNode = function(node, entity) {
-    entity.filename = this.assetPath + node.childNodes[0].nodeValue;
-    
-    var audio = entity.createAudioElement();
-    // NOTE: FF3.6 hangs at the loading screen with the next line. Works in FF4.
-    this.watchAudioAsset(audio);
+    for (var i = 0; i < node.childNodes.length; i++) {
+        var childNode = node.childNodes[i];
+        
+        switch (childNode.nodeName) {
+            case "filename":
+                entity.filename = this.assetPath + childNode.childNodes[0].nodeValue;
 
+                var audio = entity.createAudioElement();
+                // NOTE: FF3.6 hangs at the loading screen with the next line. Works in FF4.
+                this.watchAudioAsset(audio);
+                break;
+            default:    
+                break;
+        }
+    }
+    
+    if (entity.filename == null) {
+        return false;
+    }
     return true;
 }
 
