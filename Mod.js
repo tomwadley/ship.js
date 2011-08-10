@@ -21,9 +21,6 @@ function Mod(modURI, assetPath) {
     
     this.modURI = modURI;
     this.assetPath = assetPath;
-    if (this.assetPath.charAt(assetPath.length - 1) != '/') {
-        this.assetPath += '/';
-    }
     
     this.parsed = false;
     this.broken = false;
