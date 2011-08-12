@@ -20,7 +20,7 @@
 function Mod(modURI, assetPath) {
     
     this.modURI = modURI;
-    this.assetPath = assetPath;
+    this.assetPath = assetPath ? assetPath : '';
     
     this.parsed = false;
     this.broken = false;

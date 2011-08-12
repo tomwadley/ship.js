@@ -27,7 +27,13 @@
 var game;
 
 function init() {
-    game = new Game('shipCanvas', 'testmod/testmod.xml', 'testmod', 'test_level', 0);
+    game = new Game('shipCanvas', {
+        modURI: 'testmod/testmod.xml',
+        assetPath: 'testmod/',
+        levelId: 'test_level',
+        cash: 0,
+        hitPoints: 150,
+    });
     
     game.start();
 }

@@ -55,7 +55,7 @@ function debug(str) {
     debugP.innerHTML += str + "<br />";
 }
 
-function Game(canvasId, modURI, assetPath, levelId, cash) {
+function Game(canvasId, opts) {
     var HEALTH_BAR_WIDTH = 15;
 
     // Setup output context
@@ -73,11 +73,11 @@ function Game(canvasId, modURI, assetPath, levelId, cash) {
     var prevTime = 0;
     
     // Load Mod
-    var mod = new Mod(modURI, assetPath);
+    var mod = new Mod(opts.modURI, opts.assetPath);
     mod.load();
     var levelTemplate;
-    if (levelId) {
-        levelTemplate = mod.levelTemplates[levelId];
+    if (opts.levelId) {
+        levelTemplate = mod.levelTemplates[opts.levelId];
     } else {
         for (var key in mod.levelTemplates) {
             if (mod.levelTemplates[key].constructor == LevelTemplate) {
@@ -104,7 +104,7 @@ function Game(canvasId, modURI, assetPath, levelId, cash) {
     globalData.top = 0;
     globalData.bottom = canvas.height;
     globalData.context = context;
-    globalData.cash = cash;
+    globalData.cash = opts.cash;
     
     // Player setup
     var player = new Player(mod.playerTemplate);
@@ -112,6 +112,9 @@ function Game(canvasId, modURI, assetPath, levelId, cash) {
     player.y = 400;
     player.angle = 2;
     player.zorder = factories.length;
+    if (opts.hitPoints) {
+        player.hitPoints = opts.hitPoints;
+    }
     globalData.entities.push(player);
     
     this.start = function() {
