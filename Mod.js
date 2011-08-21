@@ -428,42 +428,51 @@ Mod.prototype.parseLevelTemplateNode = function(node, entity) {
         var childNode = node.childNodes[i];
         
         switch (childNode.nodeName) {
-            case "entityFactory":
-                var template;
-                var avgNumPerSecond;
-                var spawnFrom;
-                var initialAngle;
-                
+            case "duration":
+                entity.duration = parseInt(childNode.childNodes[0].nodeValue);
+                break;
+            case "entityFactories":
                 for (var j = 0; j < childNode.childNodes.length; j++) {
-                    var efChildNode = childNode.childNodes[j];
+                    if (childNode.childNodes[j].nodeName != "entityFactory") continue;
+                    var entityFactoryNode = childNode.childNodes[j];
+
+                    var template;
+                    var avgNumPerSecond;
+                    var spawnFrom;
+                    var initialAngle;
                     
-                    switch (efChildNode.nodeName) {
-                        case "avgNumPerSecond":
-                            avgNumPerSecond = parseFloat(efChildNode.childNodes[0].nodeValue);
-                            break;
-                        case "spawnFrom":
-                            spawnFrom = efChildNode.childNodes[0].nodeValue;
-                            break;
-                        case "initialAngle":
-                            initialAngle = this.parseAngle(efChildNode);
-                            break;
-                            
-                        case "decorationTemplate":
-                        case "enemyTemplate":
-                            template = this.parseTemplateNode(efChildNode, efChildNode.nodeName);
-                            break;
-                        default:
-                            break;
+                    for (var k = 0; k < entityFactoryNode.childNodes.length; k++) {
+                        var efChildNode = entityFactoryNode.childNodes[k];
+                        
+                        switch (efChildNode.nodeName) {
+                            case "avgNumPerSecond":
+                                avgNumPerSecond = parseFloat(efChildNode.childNodes[0].nodeValue);
+                                break;
+                            case "spawnFrom":
+                                spawnFrom = efChildNode.childNodes[0].nodeValue;
+                                break;
+                            case "initialAngle":
+                                initialAngle = this.parseAngle(efChildNode);
+                                break;
+                                
+                            case "decorationTemplate":
+                            case "enemyTemplate":
+                                template = this.parseTemplateNode(efChildNode, efChildNode.nodeName);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    
+                    var entityFactory = new EntityFactory(template, avgNumPerSecond);
+                    entityFactory.spawnFrom = EntityFactory.spawnFromEnum[spawnFrom.toUpperCase()];
+                    entityFactory.initialAngle = initialAngle;
+                    entity.entityFactories.push(entityFactory);
+                    if (entityFactory.template == null) {
+                        loaded = false;
                     }
                 }
-                
-                var entityFactory = new EntityFactory(template, avgNumPerSecond);
-                entityFactory.spawnFrom = EntityFactory.spawnFromEnum[spawnFrom.toUpperCase()];
-                entityFactory.initialAngle = initialAngle;
-                entity.entityFactories.push(entityFactory);
-                if (entityFactory.template == null) {
-                    loaded = false;
-                }
+
                 break;
             default:    
                 break;

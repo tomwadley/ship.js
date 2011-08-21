@@ -17,38 +17,8 @@
  */
  
  
-var globalData = {
-    game : null,
-
-    // Drawing area dimensions
-    left : 0,
-    top : 0,
-    right : 0,
-    bottom : 0,
-    
-    // User input
-    inputLeft : false,
-    inputRight : false,
-    inputUp : false,
-    inputDown : false,
-    inputShoot : false,
-    
-    inputGo : false,
-    inputGoX : 0,
-    inputGoY : 0,
-
-    freeRangeMode : false,
-    playSound : false,
-    
-    // Current entities - not to be modified outside this file
-    entities : [],
-    // Entities to add
-    newEntities : [],
-
-    sounds : null,
-
-    cash : 0
-}
+// TODO: Get rid of this
+var globalData = { }
 
 function debug(str) {
     var debugP = document.getElementById("debug");
@@ -57,6 +27,41 @@ function debug(str) {
 
 function Game(canvasId, opts) {
     var HEALTH_BAR_WIDTH = 15;
+    var LEVEL_ENDED_MSG_DURATION = 4;
+    
+    globalData = {
+        game : null,
+
+        // Drawing area dimensions
+        left : 0,
+        top : 0,
+        right : 0,
+        bottom : 0,
+        
+        // User input
+        inputLeft : false,
+        inputRight : false,
+        inputUp : false,
+        inputDown : false,
+        inputShoot : false,
+        
+        inputGo : false,
+        inputGoX : 0,
+        inputGoY : 0,
+
+        freeRangeMode : false,
+        playSound : false,
+        
+        // Current entities - not to be modified outside this file
+        entities : [],
+        // Entities to add
+        newEntities : [],
+
+        sounds : null,
+
+        levelTime : 0.0,
+        cash : 0,
+    }
 
     // Setup output context
     var outputCanvas = document.getElementById(canvasId);
@@ -68,7 +73,7 @@ function Game(canvasId, opts) {
     canvas.height = outputCanvas.height;
     var context = canvas.getContext('2d');
     
-    // Timekeeping vars
+    // Gameloop timekeeping vars
     var interval = null;
     var prevTime = 0;
     
@@ -116,7 +121,10 @@ function Game(canvasId, opts) {
         player.hitPoints = opts.hitPoints;
     }
     globalData.entities.push(player);
-    
+
+    // The levelTime when the level ended or 0 if still in progress
+    var levelEndedTime = 0;
+
     this.start = function() {
         if (!interval) {
             prevTime = (new Date()).getTime();
@@ -146,6 +154,11 @@ function Game(canvasId, opts) {
         return outputCanvas.height;
     }
 
+    var levelDurationExceeded = function() {
+        return level.template.duration > 0 && globalData.levelTime >= level.template.duration * 1000;
+    }
+    this.levelDurationExceeded = levelDurationExceeded;
+
     var gameLoop = function() {
         var currentTime = (new Date()).getTime();
         var delta = currentTime - prevTime;
@@ -159,6 +172,7 @@ function Game(canvasId, opts) {
     var update = function(delta) {
         if (delta == 0) return;
         if (!mod.isLoaded()) return;
+        globalData.levelTime += delta;
         
         // Update each entity
         for (var i = 0; i < globalData.entities.length; i++) {
@@ -188,6 +202,34 @@ function Game(canvasId, opts) {
         globalData.entities.sort(function(a, b) {
             return a.zorder - b.zorder;
         });
+
+        // Check for end of level
+        if (levelDurationExceeded()) {
+            // The level will be over as soon as there are no more enemies
+            var allEnemiesDead = true;
+            for (var i = globalData.entities.length - 1; i >= 0; i--) {
+                if (globalData.entities[i].entityType == Enemy.prototype.entityType) {
+                    allEnemiesDead = false;
+                    break;
+                }
+            }
+
+            if (allEnemiesDead && levelEndedTime == 0) {
+                // This gets set once at the end of the level
+                levelEndedTime = globalData.levelTime;
+            }
+        }
+
+        // Stop the game loop when the level has been over for some time
+        if (levelEndedTime != 0 && (globalData.levelTime - levelEndedTime) >= (LEVEL_ENDED_MSG_DURATION * 1000)) {
+            clearInterval(interval);
+            interval = null;
+            render = function() {}
+
+            if (opts.levelEndedCallback) {
+                opts.levelEndedCallback(globalData.cash);
+            }
+        }
     }
 
     var render = function() {
@@ -216,6 +258,11 @@ function Game(canvasId, opts) {
             // If paused, display paused message
             if (globalData.game.isPaused()) {
                 utils.DisplayMessage(context, "Paused");
+            }
+
+            // If level ended, display message
+            if (levelEndedTime != 0) {
+                utils.DisplayMessage(context, "Level Complete");
             }
 
             // Display health bar

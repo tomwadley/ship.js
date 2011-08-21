@@ -36,6 +36,10 @@ EntityFactory.prototype.tryGenerate = function(delta, zorder) {
     
     if (Math.random() < probability) {
         var entity = this.template.generate();
+        if (entity.entityType == Enemy.prototype.entityType && globalData.game.levelDurationExceeded()) {
+            // TODO: This is a bit of a hack
+            return;
+        }
         globalData.newEntities.push(entity);
         
         switch (this.spawnFrom) {

@@ -180,30 +180,33 @@
     
     <levelTemplates>
         <levelTemplate name="test_level">
-            <entityFactory>
-                <decorationTemplate src="bigstar" />
-                <avgNumPerSecond>1.5</avgNumPerSecond>
-                <spawnFrom>top</spawnFrom>
-                <initialAngle src="down" />
-            </entityFactory>
-            <entityFactory>
-                <decorationTemplate src="smallstar" />
-                <avgNumPerSecond>3</avgNumPerSecond>
-                <spawnFrom>top</spawnFrom>
-                <initialAngle src="down" />
-            </entityFactory>
-            <entityFactory>
-                <enemyTemplate src="grey_enemy" />
-                <avgNumPerSecond>0.3</avgNumPerSecond>
-                <spawnFrom>top</spawnFrom>
-                <initialAngle src="down" />
-            </entityFactory>
-            <entityFactory>
-                <enemyTemplate src="rust_enemy" />
-                <avgNumPerSecond>0.3</avgNumPerSecond>
-                <spawnFrom>top</spawnFrom>
-                <initialAngle src="down" />
-            </entityFactory>
+            <duration>60</duration>
+            <entityFactories>
+                <entityFactory>
+                    <decorationTemplate src="bigstar" />
+                    <avgNumPerSecond>1.5</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+                <entityFactory>
+                    <decorationTemplate src="smallstar" />
+                    <avgNumPerSecond>3</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+                <entityFactory>
+                    <enemyTemplate src="grey_enemy" />
+                    <avgNumPerSecond>0.3</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+                <entityFactory>
+                    <enemyTemplate src="rust_enemy" />
+                    <avgNumPerSecond>0.3</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+            </entityFactories>
         </levelTemplate>
     </levelTemplates>
 </shipmod>

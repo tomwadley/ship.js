@@ -25,14 +25,19 @@
 <script type="text/javascript">
 <!--
 var game;
+var cash = 0;
 
 function init() {
     game = new Game('shipCanvas', {
         modURI: 'testmod/testmod.xml',
         assetPath: 'testmod/',
         levelId: 'test_level',
-        cash: 0,
+        cash: cash,
         hitPoints: 150,
+        levelEndedCallback: function(newCash) {
+            cash = newCash;
+            init();
+        },
     });
     
     game.start();
