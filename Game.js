@@ -27,7 +27,7 @@ function debug(str) {
 
 function Game(canvasId, opts) {
     var HEALTH_BAR_WIDTH = 15;
-    var LEVEL_ENDED_MSG_DURATION = 4;
+    var LEVEL_ENDED_DELAY = 4;
     
     globalData = {
         game : null,
@@ -122,8 +122,10 @@ function Game(canvasId, opts) {
     }
     globalData.entities.push(player);
 
-    // The levelTime when the level ended or 0 if still in progress
+    // The levelTime when the level ended (win or lose) or 0 if still in progress
     var levelEndedTime = 0;
+    // True if the player won the level, false if they died
+    var levelPassed = false;
 
     this.start = function() {
         if (!interval) {
@@ -203,8 +205,14 @@ function Game(canvasId, opts) {
             return a.zorder - b.zorder;
         });
 
-        // Check for end of level
-        if (levelDurationExceeded()) {
+        // Check for end of level (loss)
+        if (levelEndedTime == 0 && player.isDead()) {
+            levelEndedTime = globalData.levelTime;
+            levelPassed = false;
+        }
+
+        // Check for end of level (win)
+        if (levelEndedTime == 0 && levelDurationExceeded()) {
             // The level will be over as soon as there are no more enemies
             var allEnemiesDead = true;
             for (var i = globalData.entities.length - 1; i >= 0; i--) {
@@ -214,20 +222,26 @@ function Game(canvasId, opts) {
                 }
             }
 
-            if (allEnemiesDead && levelEndedTime == 0) {
-                // This gets set once at the end of the level
+            if (allEnemiesDead) {
                 levelEndedTime = globalData.levelTime;
+                levelPassed = true;
             }
         }
 
         // Stop the game loop when the level has been over for some time
-        if (levelEndedTime != 0 && (globalData.levelTime - levelEndedTime) >= (LEVEL_ENDED_MSG_DURATION * 1000)) {
+        if (levelEndedTime != 0 && (globalData.levelTime - levelEndedTime) >= (LEVEL_ENDED_DELAY * 1000)) {
             clearInterval(interval);
             interval = null;
             render = function() {}
 
-            if (opts.levelEndedCallback) {
-                opts.levelEndedCallback(globalData.cash);
+            if (levelPassed) {
+                if (opts.levelPassedCallback) {
+                    opts.levelPassedCallback(globalData.cash, player.hitPoints);
+                }
+            } else {
+                if (opts.levelFailedCallback) {
+                    opts.levelFailedCallback();
+                }
             }
         }
     }
@@ -260,8 +274,8 @@ function Game(canvasId, opts) {
                 utils.DisplayMessage(context, "Paused");
             }
 
-            // If level ended, display message
-            if (levelEndedTime != 0) {
+            // If level ended in a win, display message
+            if (levelEndedTime != 0 && levelPassed) {
                 utils.DisplayMessage(context, "Level Complete");
             }
 

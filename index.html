@@ -33,9 +33,13 @@ function init() {
         assetPath: 'testmod/',
         levelId: 'test_level',
         cash: cash,
-        hitPoints: 150,
-        levelEndedCallback: function(newCash) {
+        //hitPoints: 100,
+        levelPassedCallback: function(newCash, newHitPoints) {
             cash = newCash;
+            init();
+        },
+        levelFailedCallback: function() {
+            cash = 0;
             init();
         },
     });
