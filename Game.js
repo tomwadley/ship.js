@@ -18,7 +18,7 @@
  
  
 // TODO: Get rid of this
-var globalData = { }
+var globalData = { };
 
 function debug(str) {
     var debugP = document.getElementById("debug");
@@ -60,8 +60,8 @@ function Game(canvasId, opts) {
         sounds : null,
 
         levelTime : 0.0,
-        cash : 0,
-    }
+        cash : 0
+    };
 
     // Setup output context
     var outputCanvas = document.getElementById(canvasId);
@@ -72,10 +72,6 @@ function Game(canvasId, opts) {
     canvas.width = outputCanvas.width;
     canvas.height = outputCanvas.height;
     var context = canvas.getContext('2d');
-    
-    // Gameloop timekeeping vars
-    var interval = null;
-    var prevTime = 0;
     
     // Load Mod
     var mod = new Mod(opts.modURI, opts.assetPath);
@@ -127,57 +123,65 @@ function Game(canvasId, opts) {
     // True if the player won the level, false if they died
     var levelPassed = false;
 
-    this.start = function() {
-        if (!interval) {
-            prevTime = (new Date()).getTime();
-            interval = setInterval(gameLoop, 1000 / 30);
-        }
-    }
+    // Gameloop timekeeping vars
+    var prevTime = 0;
+    var animationId = 0;
 
+    this.start = function() {
+        if (!animationId) {
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+    };
     this.pause = function() {
-        if (interval) {
-            clearInterval(interval);
-            interval = null;
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = 0;
+            prevTime = 0;
 
             // Draw one frame to display the paused message
             render();
         }
-    }
+    };
 
     this.isPaused = function() {
-        return interval == null;
-    }
+        return animationId == 0;
+    };
 
     this.totalCanvasWidth = function() {
         return outputCanvas.width;
-    }
+    };
 
     this.totalCanvasHeight = function() {
         return outputCanvas.height;
-    }
+    };
 
     var levelDurationExceeded = function() {
         return level.template.duration > 0 && globalData.levelTime >= level.template.duration * 1000;
-    }
+    };
     this.levelDurationExceeded = levelDurationExceeded;
 
-    var gameLoop = function() {
-        var currentTime = (new Date()).getTime();
-        var delta = currentTime - prevTime;
+    var gameLoop = function(currentTime) {
+        var delta = prevTime == 0 ? 0 : currentTime - prevTime;
+        if (delta > 1000) delta = 0;
+
+        animationId = requestAnimationFrame(gameLoop);
 
         update(delta);
         render();
         
         prevTime = currentTime;
-    }
+    };
 
     var update = function(delta) {
         if (delta == 0) return;
         if (!mod.isLoaded()) return;
         globalData.levelTime += delta;
+
+        var i;
         
         // Update each entity
-        for (var i = 0; i < globalData.entities.length; i++) {
+        for (i = 0; i < globalData.entities.length; i++) {
             globalData.entities[i].update(delta);
         }
         
@@ -185,14 +189,14 @@ function Game(canvasId, opts) {
         RunCollisionDetection();
         
         // Remove dead entities
-        for (var i = globalData.entities.length - 1; i >= 0; i--) {
+        for (i = globalData.entities.length - 1; i >= 0; i--) {
             if (globalData.entities[i].isDead()) {
                 globalData.entities.splice(i, 1);
             }
         }
         
         // Run factories
-        for (var i = 0; i < factories.length; i++) {
+        for (i = 0; i < factories.length; i++) {
             factories[i].tryGenerate(delta, i);
         }
         
@@ -215,7 +219,7 @@ function Game(canvasId, opts) {
         if (levelEndedTime == 0 && levelDurationExceeded()) {
             // The level will be over as soon as there are no more enemies
             var allEnemiesDead = true;
-            for (var i = globalData.entities.length - 1; i >= 0; i--) {
+            for (i = globalData.entities.length - 1; i >= 0; i--) {
                 if (globalData.entities[i].entityType == Enemy.prototype.entityType) {
                     allEnemiesDead = false;
                     break;
@@ -230,9 +234,8 @@ function Game(canvasId, opts) {
 
         // Stop the game loop when the level has been over for some time
         if (levelEndedTime != 0 && (globalData.levelTime - levelEndedTime) >= (LEVEL_ENDED_DELAY * 1000)) {
-            clearInterval(interval);
-            interval = null;
-            render = function() {}
+            cancelAnimationFrame(animationId);
+            render = function() {};
 
             if (levelPassed) {
                 if (opts.levelPassedCallback) {
@@ -244,7 +247,7 @@ function Game(canvasId, opts) {
                 }
             }
         }
-    }
+    };
 
     var render = function() {
         // Clear canvas
@@ -300,7 +303,7 @@ function Game(canvasId, opts) {
         
         // Write the internal canvas to the output canvas
         outputContext.drawImage(canvas, 0, 0);
-    }
+    };
     
     return true;
 }
